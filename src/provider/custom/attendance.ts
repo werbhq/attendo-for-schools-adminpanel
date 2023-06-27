@@ -1,12 +1,12 @@
 import { DataProviderCustom } from 'types/DataProvider';
-import { SubjectAttendance } from 'types/models/attendance';
+import { ClassroomAttendance } from 'types/models/attendance';
 import { Classroom } from 'types/models/classroom';
 import { FieldPath, dataProvider, dataProviderLegacy, db, defaultParams } from '../firebase';
 import { paginateSingleDoc } from '../helpers/pagination';
 import { MAPPING } from '../mapping';
 import { AttendanceFrontEnd } from 'types/frontend/attendance';
 
-const convertAttendanceMini = (id: string, doc: SubjectAttendance, classrooms: Classroom[]) => {
+const convertAttendanceMini = (id: string, doc: ClassroomAttendance, classrooms: Classroom[]) => {
     const { classroom, semester, subject, attendances } = doc;
     const attendance = attendances[id];
 
@@ -40,7 +40,7 @@ const AttendanceProvider: DataProviderCustom<AttendanceFrontEnd> = {
     resource: MAPPING.ATTENDANCES,
 
     getList: async (resource, params) => {
-        const { data } = await dataProviderLegacy.getList<SubjectAttendance>(
+        const { data } = await dataProviderLegacy.getList<ClassroomAttendance>(
             resource,
             defaultParams
         );
@@ -67,7 +67,7 @@ const AttendanceProvider: DataProviderCustom<AttendanceFrontEnd> = {
 
         if (docs.length === 0) throw Error('Attendance does not exist');
 
-        const e = docs[0].data() as SubjectAttendance;
+        const e = docs[0].data() as ClassroomAttendance;
         const { data: classrooms } = await dataProvider.getMany<Classroom>(MAPPING.CLASSROOMS, {
             ids: [e.classroom.id],
         });

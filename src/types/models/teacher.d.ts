@@ -10,6 +10,7 @@ export interface TeacherShort {
 }
 
 export interface Teacher extends TeacherShort {
+    created: boolean;
     userName?: string;
     status: string;
     phone?: string;

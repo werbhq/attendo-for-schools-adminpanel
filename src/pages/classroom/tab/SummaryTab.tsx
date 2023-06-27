@@ -25,26 +25,26 @@ import EditClassroom from '../components/classroom/Edit';
 import { ClassroomFrontend } from 'types/frontend/classroom';
 
 const SummaryTab = ({ label, ...rest }: { label: string }) => {
-    const record: ClassroomFrontend = useRecordContext();
+    // const record: ClassroomFrontend = useRecordContext();
     const [classroomDialog, setClassroomDialog] = useState<boolean>(false);
-    const isVirtual = record.isDerived;
-    const hasGroup = record.isDerived && record.group;
+    // const isVirtual = record.isDerived;
+    // const hasGroup = record.isDerived && record.group;
 
     return (
         <Tab {...rest} label={label}>
             <SimpleShowLayout>
                 <TextField source={SK.CLASSROOM('id')} />
-                <FunctionField
+                {/* <FunctionField
                     label="Branch"
                     render={(record: Classroom) => record.branch.toUpperCase()}
-                />
-                <FunctionField
+                /> */}
+                {/* <FunctionField
                     label="Name"
                     render={(record: Classroom) =>
                         Schemes.classNames.find(({ id }) => record.name === id)?.name
                     }
-                />
-
+                /> */}
+                {/* 
                 {hasGroup && <TextField source={SK.CLASSROOM('group')} emptyText="-" />}
                 {hasGroup && (
                     <ArrayField source={SK.CLASSROOM('groupLinks')} label="Other Groups">
@@ -69,9 +69,9 @@ const SummaryTab = ({ label, ...rest }: { label: string }) => {
 
                 {isVirtual && <TextField source={SK.CLASSROOM('semester')} />}
 
-                <BooleanField source={SK.CLASSROOM('isDerived')} label="Virtual Class" />
+                <BooleanField source={SK.CLASSROOM('isDerived')} label="Virtual Class" /> */}
 
-                {isVirtual && (
+                {/* {isVirtual && (
                     <ReferenceArrayField
                         label="Parent Classes"
                         source={SK.CLASSROOM('parentClasses')}
@@ -99,18 +99,18 @@ const SummaryTab = ({ label, ...rest }: { label: string }) => {
                         </SingleFieldList>
                         <EmptySingleDisplay fieldName={SK.CLASSROOM('teachers')} />
                     </ReferenceArrayField>
-                )}
+                )} */}
 
                 <FunctionField
                     label="Students Count"
                     render={(record: Classroom) => Object.values(record?.students).length}
                 />
-                <Typography sx={{ fontSize: '0.75em', color: 'rgba(0, 0, 0, 0.6)' }}>
+                {/* <Typography sx={{ fontSize: '0.75em', color: 'rgba(0, 0, 0, 0.6)' }}>
                     Batch
-                </Typography>
+                </Typography> */}
             </SimpleShowLayout>
 
-            <SimpleShowLayout sx={{ ml: 2, mt: -2 }}>
+            {/* <SimpleShowLayout sx={{ ml: 2, mt: -2 }}>
                 <TextField source={SK.CLASSROOM('batch.name')} label="Batch Name" />
                 <TextField
                     source={SK.CLASSROOM('batch.semester')}
@@ -121,7 +121,7 @@ const SummaryTab = ({ label, ...rest }: { label: string }) => {
                 <TextField source={SK.CLASSROOM('batch.schemeId')} label="Scheme Id" />
                 <TextField source={SK.CLASSROOM('batch.course')} label="Course" />
                 <TextField source={SK.CLASSROOM('batch.yearOfJoining')} label="Year Of Joining" />
-            </SimpleShowLayout>
+            </SimpleShowLayout> */}
 
             <div style={{ margin: '20px 0px' }}>
                 <Stack direction="row" spacing={2}>

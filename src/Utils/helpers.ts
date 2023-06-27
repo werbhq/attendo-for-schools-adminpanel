@@ -1,10 +1,15 @@
-import { Classroom, ClassroomVirtual } from '../types/models/classroom';
+import { Classroom, 
+    // ClassroomVirtual 
+} from '../types/models/classroom';
 import { StudentShort as Student } from '../types/models/student';
 import { v4 as uuidv4 } from 'uuid';
 
 export const sortByRoll = (a: Student, b: Student) => {
-    if (a.classId && b.classId) {
-        if (a.classId !== b.classId) return a.classId.localeCompare(b.classId);
+    // if (a.classId && b.classId) {
+    //     if (a.classId !== b.classId) return a.classId.localeCompare(b.classId);
+    // }
+    if (a.id && b.id) {
+        if (a.id !== b.id) return a.id.localeCompare(b.id);
     }
     return a.rollNo - b.rollNo;
 };
@@ -25,13 +30,17 @@ export const convertSingleValueListToSelectList = (value: string) => {
     return { id: value, name: value.toUpperCase() };
 };
 
-export const getClassroomId = (data: Classroom, isDerived: boolean) => {
-    const dataIdSet = [data.batch.course, data.batch.yearOfJoining, data.branch, data.name];
-    if (isDerived) {
-        const dataVirtual = data as ClassroomVirtual;
-        dataIdSet.push(dataVirtual.subjectId);
-        dataIdSet.push(uuidv4().substring(0, 4));
-    }
+// export const getClassroomId = (data: Classroom, isDerived: boolean) => {
+//     const dataIdSet = [data.batch.course, data.batch.yearOfJoining, data.branch, data.name];
+//     if (isDerived) {
+//         const dataVirtual = data as ClassroomVirtual;
+//         dataIdSet.push(dataVirtual.subjectId);
+//         dataIdSet.push(uuidv4().substring(0, 4));
+//     }
+//     return dataIdSet.join('-').toUpperCase();
+// };
+export const getClassroomId = (data: Classroom) => {
+    const dataIdSet = [data.std, data.division, data.year];
     return dataIdSet.join('-').toUpperCase();
 };
 

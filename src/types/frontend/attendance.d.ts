@@ -1,10 +1,10 @@
-import { AttendanceMini, SubjectAttendance } from 'types/models/attendance';
+import { AttendanceMini, ClassroomAttendance } from 'types/models/attendance';
 
 export interface AttendanceFrontEnd {
     id: AttendanceMini['id'];
     attendance: AttendanceMini;
-    classroom: SubjectAttendance['classroom'];
-    semester: SubjectAttendance['semester'];
-    subject: SubjectAttendance['subject'];
+    classroom: ClassroomAttendance['classroom'];
+    semester: ClassroomAttendance['semester'];
+    subject: ClassroomAttendance['subject'];
     strength: number;
 }

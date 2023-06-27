@@ -10,6 +10,7 @@ import {
     useUpdate,
 } from 'react-admin';
 import { MAPPING } from 'provider/mapping';
+import SK from 'pages/source-keys';
 
 const url = MAPPING.AUTH_TEACHERS;
 
@@ -37,9 +38,9 @@ const AuthorizedTeacherCreate = () => {
     return (
         <Create>
             <SimpleForm style={{ alignItems: 'stretch' }} onSubmit={onSubmit}>
-                <TextInput source="email" validate={[required(), email()]} />
-                <TextInput source="userName" label="name" validate={required()} />
-                <TextInput source="branch" validate={required()} />
+                <TextInput source={SK.AUTH_TEACHERS('emailId')} validate={[required(), email()]} />
+                {/* <TextInput source={SK.AUTH_TEACHERS('username')} label="name" validate={required()} /> */}
+                <TextInput source={SK.AUTH_TEACHERS('name')} label="name" validate={required()} />
             </SimpleForm>
         </Create>
     );

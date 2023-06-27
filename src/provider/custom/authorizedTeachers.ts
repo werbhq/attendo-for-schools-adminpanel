@@ -9,21 +9,21 @@ import {
 } from '../firebase';
 import { MAPPING } from '../mapping';
 import { DataProviderCustom } from 'types/DataProvider';
-import { AuthorizedTeacher } from 'types/models/teacher';
+import { Teacher } from 'types/models/teacher';
 import { paginateSingleDoc } from '../helpers/pagination';
 
 /**
  * Don't call this directly
  * Use dataProvider
  */
-const AuthTeachersProvider: DataProviderCustom<AuthorizedTeacher> = {
+const AuthTeachersProvider: DataProviderCustom<Teacher> = {
     resource: MAPPING.AUTH_TEACHERS,
 
     getList: async (resource, params) => {
         const { data } = await dataProvider.getOne(MAPPING.DATA, {
             id: MAPPING.AUTH_TEACHERS,
         });
-        const values = Object.values(data.teachers) as AuthorizedTeacher[];
+        const values = Object.values(data.teachers) as Teacher[];
         return { data: paginateSingleDoc(params, values), total: values.length, status: 200 };
     },
 
@@ -36,14 +36,14 @@ const AuthTeachersProvider: DataProviderCustom<AuthorizedTeacher> = {
 
     getMany: async (resource, params) => {
         const { ids } = params;
-        const { data } = await dataProvider.getList<AuthorizedTeacher>(resource, defaultParams);
+        const { data } = await dataProvider.getList<Teacher>(resource, defaultParams);
         const finalData = data.filter((e) => ids.includes(e.id));
         return { data: finalData, status: 200 };
     },
 
     getManyReference: async (resource, params) => {
         const { ids } = params;
-        const { data } = await dataProvider.getList<AuthorizedTeacher>(resource, defaultParams);
+        const { data } = await dataProvider.getList<Teacher>(resource, defaultParams);
         const finalData = data.filter((e) => ids.includes(e.id));
         return { data: finalData, status: 200 };
     },

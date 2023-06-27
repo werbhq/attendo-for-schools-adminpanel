@@ -1,29 +1,31 @@
-export interface Subject {
-    id: string;
-    name: string;
-    code: string;
-}
+//TODO: DELETE
 
-export interface SubjectBranchSubs {
-    branch: string;
-    subjects: Subject[]; // Change
-}
+// export interface Subject {
+//     id: string;
+//     name: string;
+//     code: string;
+// }
 
-export interface SubjectSemester {
-    semester: number;
-    branchSubs: SubjectBranchSubs[];
-}
+// export interface SubjectBranchSubs {
+//     branch: string;
+//     subjects: Subject[]; // Change
+// }
 
-export interface SubjectDoc {
-    id: string;
-    course: string;
-    organization: string;
-    year: number;
-    semesters: SubjectSemester[];
-}
+// export interface SubjectSemester {
+//     semester: number;
+//     branchSubs: SubjectBranchSubs[];
+// }
 
-export interface SubjectIndex {
-    schemes: {
-        [id: string]: SubjectDoc;
-    };
-}
+// export interface SubjectDoc {
+//     id: string;
+//     course: string;
+//     organization: string;
+//     year: number;
+//     semesters: SubjectSemester[];
+// }
+
+// export interface SubjectIndex {
+//     schemes: {
+//         [id: string]: SubjectDoc;
+//     };
+// }

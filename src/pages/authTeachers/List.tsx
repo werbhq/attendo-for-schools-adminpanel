@@ -24,7 +24,8 @@ import { AuthTeachersProviderExtended } from 'provider/custom/authorizedTeachers
 import { ImportButton } from './components/Button';
 import jsonExport from 'jsonexport/dist';
 import { MAPPING } from 'provider/mapping';
-import { AuthorizedTeacher } from 'types/models/teacher';
+import { TeacherShort } from 'types/models/teacher';
+import SK from 'pages/source-keys';
 
 const filters = [
     <SearchInput source="id" alwaysOn resettable />,
@@ -57,7 +58,7 @@ const AuthorizedTeacherList = () => {
         );
     };
 
-    const teachersExporter = (data: AuthorizedTeacher[]) => {
+    const teachersExporter = (data: TeacherShort[]) => {
         const dataForExport = data;
         jsonExport(dataForExport, { headers: csvExportHeaders }, (err, csv) => {
             downloadCSV(csv, `Teachers`);
@@ -83,10 +84,10 @@ const AuthorizedTeacherList = () => {
             actions={<TopToolBar />}
         >
             <Datagrid rowClick="show" bulkActionButtons={<PostBulkActionButtons />}>
-                <EmailField source="email" />
-                <TextField source="userName" label="Name" />
-                <BooleanField source="created" looseValue sortable={false} />
-                <TextField source="branch" />
+                <EmailField source={SK.AUTH_TEACHERS('emailId')} />
+                <TextField source={SK.AUTH_TEACHERS('name')} label="Name" />
+                <BooleanField source={SK.AUTH_TEACHERS('created')} looseValue sortable={false} />
+                
             </Datagrid>
         </List>
     );

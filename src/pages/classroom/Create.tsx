@@ -2,175 +2,202 @@ import { useEffect, useState } from 'react';
 import {
     Create,
     SimpleForm,
-    SelectInput,
-    useDataProvider,
-    ReferenceArrayInput,
-    AutocompleteArrayInput,
+    // SelectInput,
+    // useDataProvider,
+    // ReferenceArrayInput,
+    // AutocompleteArrayInput,
+    TextInput,
+    useNotify,
+    useRedirect,
+    useRefresh,
+    useUpdate,
 } from 'react-admin';
 import { MAPPING } from 'provider/mapping';
-import { getClassroomId } from 'Utils/helpers';
-import { Schemes } from 'Utils/Schemes';
-import { Subject, SubjectDoc } from 'types/models/subject';
-import { Batch } from 'types/models/batch';
-import { defaultParams } from 'provider/firebase';
-import { Classroom, ClassroomNonVirtual, ClassroomVirtual } from 'types/models/classroom';
-import { AuthorizedTeacher, TeacherShort } from 'types/models/teacher';
+// import { getClassroomId } from 'Utils/helpers';
+// import { Schemes } from 'Utils/Schemes';
+// import { Subject, SubjectDoc } from 'types/models/subject';
+// import { Batch } from 'types/models/batch';
+// import { defaultParams } from 'provider/firebase';
+// import { Classroom, ClassroomNonVirtual, ClassroomVirtual } from 'types/models/classroom';
+// import { AuthorizedTeacher, TeacherShort } from 'types/models/teacher';
 
 import SK from 'pages/source-keys';
-import GroupLink from './components/classroom/GroupLink';
+const url = MAPPING.CLASSROOMS;
 
-const CURRENT_CLASS_ID = 'This Classroom';
+// import GroupLink from './components/classroom/GroupLink';
 
-const CreateClassroom = ({
-    schemes: schemeData,
-    batchData,
-    teacherData,
-}: {
-    schemes: SubjectDoc[];
-    batchData: Batch[];
-    teacherData: TeacherShort[];
-}) => {
-    const { getBranches, getSemesters, getSubjects, isDerived } = new Schemes(schemeData);
-    const [data, setData] = useState<{
-        scheme: null | string;
-        branch: null | string;
-        name: null | string;
-        group: null | string;
-        semester: null | number;
-        batchId: null | string;
-    }>({
-        scheme: null,
-        branch: null,
-        name: null,
-        group: null,
-        semester: null,
-        batchId: null,
-    });
+// const CURRENT_CLASS_ID = 'This Classroom';
 
-    const [groupDependency, setGroupDependency] = useState<{
-        subjectId: string;
-        parentClasses: string[];
-    }>({ subjectId: '', parentClasses: [] });
+const ClassroomsCreate=() =>{
+//     schemes: schemeData,
+//     batchData,
+//     teacherData,
+// }: {
+//     schemes: SubjectDoc[];
+//     batchData: Batch[];
+//     teacherData: TeacherShort[];
+// }) => 
 
-    const batchChoices = batchData.map(({ name, id }) => ({ name, id }));
+    // const { getBranches, getSemesters, getSubjects, isDerived } = new Schemes(schemeData);
+    // const [data, setData] = useState<{
+    //     scheme: null | string;
+    //     branch: null | string;
+    //     name: null | string;
+    //     group: null | string;
+    //     semester: null | number;
+    //     batchId: null | string;
+    // }>({
+    //     scheme: null,
+    //     branch: null,
+    //     name: null,
+    //     group: null,
+    //     semester: null,
+    //     batchId: null,
+    // });
 
-    function changeBatch(batchId: string) {
-        const batch = batchData.find((e) => e.id === batchId);
+    // const [groupDependency, setGroupDependency] = useState<{
+    //     subjectId: string;
+    //     parentClasses: string[];
+    // }>({ subjectId: '', parentClasses: [] });
 
-        if (isDerived(data.name)) {
-            setData({
-                ...data,
-                scheme: batch?.schemeId ?? null,
-                batchId,
-            });
-        } else {
-            setData({
-                ...data,
-                scheme: batch?.schemeId ?? null,
-                semester: batch?.semester ?? null,
-                batchId,
-            });
-        }
-    }
+    // const batchChoices = batchData.map(({ name, id }) => ({ name, id }));
 
-    const validateClassroom = (values: any) => {
-        const errors: { [index: string]: string } = {};
-        const id = (e: { id: string }) => e.id;
+    // function changeBatch(batchId: string) {
+    //     const batch = batchData.find((e) => e.id === batchId);
 
-        const customValidator = (data: any[], fieldName: string) => {
-            if (!data.map(id).includes(values[fieldName as keyof Classroom])) {
-                errors[fieldName] = 'ra.validation.required';
+    //     if (isDerived(data.name)) {
+    //         setData({
+    //             ...data,
+    //             scheme: batch?.schemeId ?? null,
+    //             batchId,
+    //         });
+    //     } else {
+    //         setData({
+    //             ...data,
+    //             scheme: batch?.schemeId ?? null,
+    //             semester: batch?.semester ?? null,
+    //             batchId,
+    //         });
+    //     }
+    // }
+
+    // const validateClassroom = (values: any) => {
+    //     const errors: { [index: string]: string } = {};
+    //     const id = (e: { id: string }) => e.id;
+
+    //     const customValidator = (data: any[], fieldName: string) => {
+    //         if (!data.map(id).includes(values[fieldName as keyof Classroom])) {
+    //             errors[fieldName] = 'ra.validation.required';
+    //         }
+    //     };
+
+    //     const customValidatorArray = (data: any, fieldName: string) => {
+    //         if (data[fieldName]?.length === 0) {
+    //             errors[fieldName] = 'ra.validation.required';
+    //         }
+    //     };
+
+    //     customValidator(getBranches(data.scheme), SK.CLASSROOM('branch'));
+    //     customValidator(Schemes.classNames, SK.CLASSROOM('name'));
+
+    //     if (isDerived(values.name)) {
+    //         customValidator(getSemesters(data.scheme), SK.CLASSROOM('semester'));
+    //         customValidator(
+    //             getSubjects(data.scheme, data.branch, data.semester),
+    //             SK.CLASSROOM('subjectId')
+    //         );
+    //         customValidatorArray(values, SK.CLASSROOM('parentClasses'));
+
+    //         if (values[SK.CLASSROOM('groupLinks')]) {
+    //             const groupSet = new Set();
+
+    //             (values[SK.CLASSROOM('groupLinks')] as Classroom['groupLinks'])?.forEach(
+    //                 ({ group }) => {
+    //                     if (groupSet.has(group))
+    //                         errors['groupLinks'] = 'Group names must be unique';
+    //                     else groupSet.add(group);
+    //                 }
+    //             );
+    //         }
+    //     }
+    //     return errors;
+    // };
+
+    // const transformSubmit = (props: any) => {
+    //     const record = props as Classroom;
+    //     const batch = batchData.find((e) => e.id === record.batch?.id) as Batch;
+    //     record.batch = batch;
+
+    //     const classroomId = getClassroomId(record, isDerived(record.name));
+
+    //     if (record.groupLinks) {
+    //         record.group = record.groupLinks.find((e) => e.id === CURRENT_CLASS_ID)?.group ?? null;
+    //         record.groupLinks = record.groupLinks.filter((e) => e.id !== CURRENT_CLASS_ID);
+    //     }
+
+    //     const common = {
+    //         id: classroomId,
+    //         name: record.name,
+    //         group: record.group ?? null,
+    //         branch: record.branch,
+    //         batch,
+    //         students: {},
+    //     };
+
+    //     let finalData: ClassroomNonVirtual | ClassroomVirtual;
+
+    //     if (!isDerived(record.name)) {
+    //         const nonVirtualClassroom: ClassroomNonVirtual = {
+    //             ...common,
+    //             isDerived: false,
+    //             subjects: {},
+    //         };
+    //         finalData = nonVirtualClassroom;
+    //     } else {
+    //         const recordVirtual = record as ClassroomVirtual & { teachers: string[] };
+    //         const newTeachers = teacherData.filter((e) => recordVirtual.teachers.includes(e.id));
+
+    //         const virtualClassroom: ClassroomVirtual = {
+    //             ...common,
+    //             isDerived: true,
+    //             parentClasses: recordVirtual.parentClasses,
+    //             groupLinks: record.groupLinks ?? [],
+    //             subject: getSubjects(data.scheme, data.branch, data.semester).find(
+    //                 (e) => e.id === record.subjectId
+    //             ) as Subject,
+    //             subjectId: recordVirtual.subjectId,
+    //             teachers: newTeachers,
+    //             semester: recordVirtual.semester,
+    //         };
+    //         finalData = virtualClassroom;
+    //     }
+
+    //     return finalData;
+    // };
+
+    const [update] = useUpdate();
+    const refresh = useRefresh();
+    const notify = useNotify();
+    const redirect = useRedirect();
+    const onSubmit = (data: any) => {
+        data = { ...data, id: data.std+"-"+data.division+"-"+data.year };
+        // data = { ...data, id: getClassroomId(data) };
+        update(
+            url,
+            { id: data.id, data },
+            {
+                onSuccess: () => {
+                    notify(`Added ${data.id}`, { type: 'success' });
+                    refresh();
+                    redirect('list', url);
+                },
             }
-        };
-
-        const customValidatorArray = (data: any, fieldName: string) => {
-            if (data[fieldName]?.length === 0) {
-                errors[fieldName] = 'ra.validation.required';
-            }
-        };
-
-        customValidator(getBranches(data.scheme), SK.CLASSROOM('branch'));
-        customValidator(Schemes.classNames, SK.CLASSROOM('name'));
-
-        if (isDerived(values.name)) {
-            customValidator(getSemesters(data.scheme), SK.CLASSROOM('semester'));
-            customValidator(
-                getSubjects(data.scheme, data.branch, data.semester),
-                SK.CLASSROOM('subjectId')
-            );
-            customValidatorArray(values, SK.CLASSROOM('parentClasses'));
-
-            if (values[SK.CLASSROOM('groupLinks')]) {
-                const groupSet = new Set();
-
-                (values[SK.CLASSROOM('groupLinks')] as Classroom['groupLinks'])?.forEach(
-                    ({ group }) => {
-                        if (groupSet.has(group))
-                            errors['groupLinks'] = 'Group names must be unique';
-                        else groupSet.add(group);
-                    }
-                );
-            }
-        }
-        return errors;
+        );
     };
-
-    const transformSubmit = (props: any) => {
-        const record = props as Classroom;
-        const batch = batchData.find((e) => e.id === record.batch?.id) as Batch;
-        record.batch = batch;
-
-        const classroomId = getClassroomId(record, isDerived(record.name));
-
-        if (record.groupLinks) {
-            record.group = record.groupLinks.find((e) => e.id === CURRENT_CLASS_ID)?.group ?? null;
-            record.groupLinks = record.groupLinks.filter((e) => e.id !== CURRENT_CLASS_ID);
-        }
-
-        const common = {
-            id: classroomId,
-            name: record.name,
-            group: record.group ?? null,
-            branch: record.branch,
-            batch,
-            students: {},
-        };
-
-        let finalData: ClassroomNonVirtual | ClassroomVirtual;
-
-        if (!isDerived(record.name)) {
-            const nonVirtualClassroom: ClassroomNonVirtual = {
-                ...common,
-                isDerived: false,
-                subjects: {},
-            };
-            finalData = nonVirtualClassroom;
-        } else {
-            const recordVirtual = record as ClassroomVirtual & { teachers: string[] };
-            const newTeachers = teacherData.filter((e) => recordVirtual.teachers.includes(e.id));
-
-            const virtualClassroom: ClassroomVirtual = {
-                ...common,
-                isDerived: true,
-                parentClasses: recordVirtual.parentClasses,
-                groupLinks: record.groupLinks ?? [],
-                subject: getSubjects(data.scheme, data.branch, data.semester).find(
-                    (e) => e.id === record.subjectId
-                ) as Subject,
-                subjectId: recordVirtual.subjectId,
-                teachers: newTeachers,
-                semester: recordVirtual.semester,
-            };
-            finalData = virtualClassroom;
-        }
-
-        return finalData;
-    };
-
     return (
-        <Create transform={transformSubmit}>
-            <SimpleForm style={{ alignItems: 'stretch' }} validate={validateClassroom}>
-                <SelectInput
+        <Create >
+            <SimpleForm style={{ alignItems: 'stretch' }} onSubmit={onSubmit}>
+                {/* <SelectInput
                     source={SK.CLASSROOM('batch.id')}
                     label="Batch Name"
                     choices={batchChoices}
@@ -188,9 +215,12 @@ const CreateClassroom = ({
                     choices={data.branch ? Schemes.classNames : []}
                     onChange={(e) => setData({ ...data, name: e.target.value })}
                     required
-                />
+                /> */}
+                <TextInput source={SK.CLASSROOM('std')} required />
+                <TextInput source={SK.CLASSROOM('division')} required/>
+                <TextInput source={SK.CLASSROOM('year')} required />
 
-                {isDerived(data.name) && (
+                {/* {isDerived(data.name) && (
                     <>
                         <SelectInput
                             source={SK.CLASSROOM('semester')}
@@ -259,61 +289,61 @@ const CreateClassroom = ({
                             />
                         </ReferenceArrayInput>
                     </>
-                )}
+                )} */}
             </SimpleForm>
         </Create>
     );
 };
 
-const ClassroomsCreate = () => {
-    const dataProvider = useDataProvider();
-    const [schemeData, setData] = useState<SubjectDoc[]>([]);
-    const [teachers, setTeachers] = useState<TeacherShort[]>([]);
-    const [batchData, setBatchData] = useState<Batch[]>([]);
+// const ClassroomsCreate = () => {
+//     const dataProvider = useDataProvider();
+//     const [schemeData, setData] = useState<SubjectDoc[]>([]);
+//     const [teachers, setTeachers] = useState<TeacherShort[]>([]);
+//     const [batchData, setBatchData] = useState<Batch[]>([]);
 
-    const [loading, setLoading] = useState(true);
+//     const [loading, setLoading] = useState(true);
 
-    const fetchData = () => {
-        dataProvider.getList<AuthorizedTeacher>(MAPPING.AUTH_TEACHERS, defaultParams).then((e) => {
-            const teacherData = e.data
-                .filter((e) => e.created)
-                .map(({ id, email, userName }) => ({
-                    id,
-                    emailId: email,
-                    name: userName,
-                }));
-            setTeachers(teacherData);
-        });
+//     const fetchData = () => {
+//         dataProvider.getList<AuthorizedTeacher>(MAPPING.AUTH_TEACHERS, defaultParams).then((e) => {
+//             const teacherData = e.data
+//                 .filter((e) => e.created)
+//                 .map(({ id, email, userName }) => ({
+//                     id,
+//                     emailId: email,
+//                     name: userName,
+//                 }));
+//             setTeachers(teacherData);
+//         });
 
-        dataProvider.getList<Batch>(MAPPING.BATCHES, defaultParams).then((e) => {
-            setBatchData(e.data);
-        });
+//         dataProvider.getList<Batch>(MAPPING.BATCHES, defaultParams).then((e) => {
+//             setBatchData(e.data);
+//         });
 
-        dataProvider
-            .getList<SubjectDoc>(MAPPING.SUBJECT, defaultParams)
-            .then((e) => setData(e.data));
-    };
+//         dataProvider
+//             .getList<SubjectDoc>(MAPPING.SUBJECT, defaultParams)
+//             .then((e) => setData(e.data));
+//     };
 
-    useEffect(() => {
-        setLoading(true);
-        fetchData();
-        setLoading(false);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+//     useEffect(() => {
+//         setLoading(true);
+//         fetchData();
+//         setLoading(false);
+//         // eslint-disable-next-line react-hooks/exhaustive-deps
+//     }, []);
 
-    return (
-        <>
-            {loading ? (
-                <></>
-            ) : (
-                <CreateClassroom
-                    schemes={schemeData}
-                    batchData={batchData}
-                    teacherData={teachers}
-                />
-            )}
-        </>
-    );
-};
+//     return (
+//         <>
+//             {loading ? (
+//                 <></>
+//             ) : (
+//                 <CreateClassroom
+//                     schemes={schemeData}
+//                     batchData={batchData}
+//                     teacherData={teachers}
+//                 />
+//             )}
+//         </>
+//     );
+// };
 
 export default ClassroomsCreate;

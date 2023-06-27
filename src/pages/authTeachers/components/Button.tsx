@@ -4,8 +4,9 @@ import { useNotify, useRefresh, useDataProvider, useUpdate } from 'react-admin';
 import { useRef } from 'react';
 import { MAPPING } from 'provider/mapping';
 import CSVReader from 'react-csv-reader';
-import { AuthorizedTeacher } from 'types/models/teacher';
+// import { AuthorizedTeacher } from 'types/models/teacher';
 import { defaultParams } from 'provider/firebase';
+import { Teacher } from 'types/models/teacher';
 
 const resource = MAPPING.AUTH_TEACHERS;
 
@@ -15,7 +16,7 @@ export const ImportButton = ({ csvExportHeaders, ...rest }: { csvExportHeaders: 
     const refresh = useRefresh();
     const dataProvider = useDataProvider();
     const [update] = useUpdate();
-    const fileLoadHandler = async (data: AuthorizedTeacher[]) => {
+    const fileLoadHandler = async (data: Teacher[]) => {
         let filteredData = [];
         const record = await dataProvider.getList(resource, defaultParams).then((e) => e.data); //whole data will be read only while importing
         const invalidHeader = data.some((e) => {
