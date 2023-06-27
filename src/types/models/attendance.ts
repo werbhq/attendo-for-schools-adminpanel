@@ -1,18 +1,15 @@
+
+import type{ BaseClass } from './base_class';
 import type { ClassroomShort } from './classroom';
-import type { StudentShort } from './student';
-import type { Subject } from './subject';
 import type { TeacherShort } from './teacher';
-import type { Meta } from './meta';
 
 export interface AttendanceShort {
     id: string;
     date: string;
     dateTime: number;
-    hour: number;
-    semester: number;
+    slot: string;
     classroom: ClassroomShort;
     teacher: TeacherShort;
-    subject: Subject;
 }
 
 export interface Attendance extends AttendanceShort {
@@ -26,7 +23,7 @@ export interface AttendanceMini {
     id: string;
     date: string;
     dateTime: number;
-    hour: number;
+    slot: string;
     teacherId: string;
     absentees: string[];
     unrecognisedNames?: string[];
@@ -34,41 +31,16 @@ export interface AttendanceMini {
     leaves?: string[];
 }
 
-export interface SubjectAttendance {
+export interface ClassroomAttendance extends BaseClass{
     id: string;
     classroom: ClassroomShort;
     teachers: { [id: string]: TeacherShort };
-    subject: Subject;
     semester: number;
     attendances: { [id: string]: AttendanceMini };
-    meta?: Meta;
 }
 
-export interface AutoAttendance extends Attendance {
-    meetLookup: string;
-    userName: string;
-}
-
-interface _StudentAttendance extends StudentShort {
-    attendance: {
-        subjectId: string;
-        percentage: number;
-    }[];
-}
-
-export interface AttendanceReport {
-    range?: {
-        from: Date; // Will be monthly
-        to: Date; // Will be monthly
-    };
-    semester?: number;
-    classroomId: string;
-    subjects: Subject[];
-    attendances: _StudentAttendance[];
-}
-
-export function SubjectAttendanceToAttendances(data: SubjectAttendance) {
-    const { semester, subject, classroom, attendances, teachers } = data;
+export function ClassroomAttendanceToAttendances(data: ClassroomAttendance) {
+    const { classroom, attendances, teachers } = data;
 
     const attendanceData: Attendance[] = [];
 
@@ -79,7 +51,7 @@ export function SubjectAttendanceToAttendances(data: SubjectAttendance) {
             id: doc.id,
             date: doc.date,
             dateTime: doc.dateTime,
-            hour: doc.hour,
+            slot: doc.slot,
             absentees: doc.absentees ?? [],
             unrecognisedNames: doc.unrecognisedNames ?? [],
             lateComers: doc.lateComers ?? [],
@@ -89,9 +61,7 @@ export function SubjectAttendanceToAttendances(data: SubjectAttendance) {
                 emailId: teacherId,
                 name: teacherId,
             },
-            semester,
             classroom,
-            subject,
         };
 
         attendanceData.push(attendanceDoc);
@@ -100,14 +70,3 @@ export function SubjectAttendanceToAttendances(data: SubjectAttendance) {
     return attendanceData;
 }
 
-export interface ClassAttendance {
-    id: string;
-    classroom: ClassroomShort;
-    dateTime?: Date;
-    date?: string;
-    hour?: number;
-    teacher?: TeacherShort;
-    students: {
-        [id: string]: string;
-    };
-}
