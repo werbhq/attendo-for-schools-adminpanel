@@ -29,7 +29,7 @@ const MyDatagridRow = ({
             {React.Children?.map(children, (field) => (
                 <TableCell key={`${id}-${field.props.source}`}>{field}</TableCell>
             ))}
-            {record?.attendance.sort(sorter).map((e) => {
+            {/* {record?.attendance.sort(sorter).map((e) => {
                 return (
                     <TableCell key={`${e.subjectId}`}>
                         <Tooltip title={`${e.name} (${e.subjectId.toUpperCase()})`}>
@@ -48,7 +48,7 @@ const MyDatagridRow = ({
                         </Tooltip>
                     </TableCell>
                 );
-            })}
+            })} */}
         </TableRow>
     </RecordContextProvider>
 );
@@ -56,14 +56,14 @@ const MyDatagridRow = ({
 const DatagridHeader = (props: { children?: any[]; data?: Report[] }) => {
     const children = props.children;
 
-    const subjects =
-        props.data && props.data?.length !== 0
-            ? props.data[0].attendance.map(({ subjectId, name, isVirtualClass }) => ({
-                  id: subjectId.toUpperCase(),
-                  name,
-                  isVirtualClass,
-              }))
-            : [];
+    // const subjects =
+    //     props.data && props.data?.length !== 0
+    //         ? props.data[0].attendance.map(({ subjectId, name, isVirtualClass }) => ({
+    //               id: subjectId.toUpperCase(),
+    //               name,
+    //               isVirtualClass,
+    //           }))
+    //         : [];
 
     return (
         <TableHead
@@ -77,7 +77,7 @@ const DatagridHeader = (props: { children?: any[]; data?: Report[] }) => {
                 {children?.map((field) => (
                     <TableCell key={field.props.source}>{titleCase(field.props.source)}</TableCell>
                 ))}
-                {subjects.sort(sorter).map(({ name, id, isVirtualClass }) => (
+                {/* {subjects.sort(sorter).map(({ name, id, isVirtualClass }) => (
                     <TableCell key={id}>
                         <Tooltip title={name}>
                             <Typography variant="body2" fontWeight={isVirtualClass ? '' : 'bold'}>
@@ -89,7 +89,7 @@ const DatagridHeader = (props: { children?: any[]; data?: Report[] }) => {
                             </Typography>
                         </Tooltip>
                     </TableCell>
-                ))}
+                ))} */}
             </TableRow>
         </TableHead>
     );

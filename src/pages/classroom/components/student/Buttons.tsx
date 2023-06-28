@@ -193,19 +193,19 @@ export const ImportButton = ({
             return notify(message, { type: 'error' });
         }
 
-        if (record.isDerived) {
-            const parentClasses = record.parentClasses;
-            const invalidClassId = data.some((e) => !parentClasses.includes(e.classId));
+        // if (record.isDerived) {
+        //     const parentClasses = record.parentClasses;
+        //     const invalidClassId = data.some((e) => !parentClasses.includes(e.classId));
 
-            if (invalidClassId) {
-                const message = `ClassIds don't match the Parent Classes Proper classIds are ${parentClasses.join(
-                    ','
-                )}`;
-                return notify(message, { type: 'error' });
-            }
+        //     if (invalidClassId) {
+        //         const message = `ClassIds don't match the Parent Classes Proper classIds are ${parentClasses.join(
+        //             ','
+        //         )}`;
+        //         return notify(message, { type: 'error' });
+        //     }
 
-            data = data.filter((e) => parentClasses.includes(e.classId));
-        } else {
+        //     data = data.filter((e) => parentClasses.includes(e.classId));
+        // } else {
             const classId = record.id;
             let containedClassId;
             if (data.some((e) => e.hasOwnProperty('classId'))) {
@@ -214,7 +214,7 @@ export const ImportButton = ({
                 containedClassId = data;
             }
             data = containedClassId;
-        }
+        // }
 
         await dataProvider.update<Student>(MAPPING.STUDENTS, {
             id: record.id,

@@ -104,7 +104,7 @@ export default function EditStudent({
         const newRecord = e as Student;
         const index = students.findIndex((e) => e.id === newRecord.id);
         if (index !== -1) newStudents[index] = newRecord;
-        else newStudents.push({ ...newRecord, id: newRecord.email });
+        else newStudents.push({ ...newRecord,  id: newRecord.admNo  });
 
         await dataProvider.update<Student>(url, {
             id,
@@ -158,15 +158,17 @@ export default function EditStudent({
                     required
                 />
                 <TextInput
-                    source={SK.STUDENT('regNo')}
-                    label="Registration Number"
+                    // source={SK.STUDENT('regNo')}
+                    // label="Registration Number"
+                    source={SK.STUDENT('admNo')}
+                    label="Admission Number"
                     sx={style}
                     required
                     format={(props) => props && autoCapitalize(props)}
                 />
                 <TextInput source={SK.STUDENT('name')} label="Name" sx={style} required />
                 <TextInput source={SK.STUDENT('email')} label="Email" sx={style} required />
-                <TextInput source={SK.STUDENT('userName')} label="User Name" sx={style} />
+                {/* <TextInput source={SK.STUDENT('userName')} label="User Name" sx={style} /> */}
                 <Stack direction="row" spacing={3}>
                     <SaveButton label={dialog.add ? 'Add' : 'Save'} />
                     {!dialog.add && <CustomDeleteButton handleDelete={handleDelete} />}

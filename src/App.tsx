@@ -2,9 +2,6 @@ import { Admin, defaultTheme, Resource } from 'react-admin';
 import red from '@mui/material/colors/red';
 import Classroom from './pages/classroom/Index';
 import DashBoard from './pages/dashboard/Dashboard';
-import Subject from './pages/subjects';
-import Batches from './pages/batches';
-import Courses from './pages/courses';
 import Attendance from './pages/attendances/Index';
 import { RaDatagrid, RaList } from 'components/ui/style';
 import AuthTeachers from './pages/authTeachers';
@@ -46,9 +43,6 @@ const App = () => (
         layout={CustomLayout}
     >
         <Resource {...AuthTeachers} />
-        <Resource {...Courses} />
-        <Resource {...Subject} />
-        <Resource {...Batches} />
         <Resource {...Classroom} />
         <Resource {...Attendance} />
     </Admin>

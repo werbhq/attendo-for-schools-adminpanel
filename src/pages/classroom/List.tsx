@@ -7,6 +7,7 @@ import {
     ReferenceField,
     SearchInput,
     TextInput,
+    NumberField,
 } from 'react-admin';
 import { MAPPING } from 'provider/mapping';
 import { Schemes } from 'Utils/Schemes';
@@ -16,16 +17,9 @@ import SK from 'pages/source-keys';
 
 const filters = [
     <SearchInput source={SK.CLASSROOM('id')} placeholder="Enter Id" alwaysOn resettable />,
-    <QuickFilter
-        source={SK.CLASSROOM('batch.running')}
-        label="Running"
-        defaultValue={true}
-        resettable
-    />,
-    <TextInput source={SK.CLASSROOM('batch.name')} resettable />,
-    <TextInput source={SK.CLASSROOM('branch')} resettable />,
-    <TextInput source={SK.CLASSROOM('name')} resettable />,
-    <QuickFilter source={SK.CLASSROOM('isDerived')} label="Virtual" defaultValue={true} />,
+    <TextInput source={SK.CLASSROOM('std')} resettable />,
+    <TextInput source={SK.CLASSROOM('division')} resettable />,
+    <TextInput source={SK.CLASSROOM('year')} resettable />,
 ];
 
 const ClassroomsList = () => {
@@ -33,48 +27,9 @@ const ClassroomsList = () => {
         <List exporter={false} filters={filters} emptyWhileLoading>
             <Datagrid rowClick="show">
                 <TextField source={SK.CLASSROOM('id')} />
-                <TextField source={SK.CLASSROOM('batch.name')} label="Batch" emptyText="-" />
-                <TextField
-                    source={SK.CLASSROOM('subject.name')}
-                    label="Subject"
-                    emptyText="-"
-                    sortable={false}
-                />
-                <BooleanField source={SK.CLASSROOM('batch.running')} label="Running" />
-                <TextField
-                    source={SK.CLASSROOM('batch.yearOfJoining')}
-                    label="Year"
-                    emptyText="-"
-                />
-                <FunctionField
-                    label="Semester"
-                    render={(record: Classroom) =>
-                        record.isDerived ? record.semester : record.batch.semester
-                    }
-                />
-                <FunctionField
-                    label="Branch"
-                    render={(record: Classroom) => record.branch.toUpperCase()}
-                />
-                <FunctionField
-                    label="Name"
-                    render={(record: Classroom) =>
-                        Schemes.classNames.find(({ id }) => record.name === id)?.name
-                    }
-                />
-                <TextField source={SK.CLASSROOM('group')} emptyText="-" />
-                <FunctionField
-                    label="Students"
-                    render={(record: Classroom) => Object.values(record.students)?.length}
-                />
-                <ReferenceField
-                    source={SK.CLASSROOM('batch.schemeId')}
-                    reference={MAPPING.SUBJECT}
-                    link="show"
-                >
-                    <TextField source={SK.CLASSROOM('id')} />
-                </ReferenceField>
-                <BooleanField source={SK.CLASSROOM('isDerived')} label="Virtual Class" />
+                <TextField source={SK.CLASSROOM('std')} />
+                <TextField source={SK.CLASSROOM('division')} />
+                <NumberField source={SK.CLASSROOM('year')} />
             </Datagrid>
         </List>
     );

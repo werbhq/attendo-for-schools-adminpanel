@@ -12,6 +12,7 @@ import { AuthTeachersProviderExtended } from 'provider/custom/authorizedTeachers
 import LoadingButton from '@mui/lab/LoadingButton';
 import { useState } from 'react';
 import { AuthorizedTeacher } from 'types/models/teacher';
+import SK from 'pages/source-keys';
 
 const AuthorizedTeacherShow = () => {
     const notify = useNotify();
@@ -35,11 +36,10 @@ const AuthorizedTeacherShow = () => {
     return (
         <Show>
             <SimpleShowLayout>
-                <TextField source="id" />
-                <EmailField source="email" />
-                <TextField source="userName" label="Name" />
-                <BooleanField source="created" looseValue />
-                <TextField source="branch" />
+            <TextField source={SK.AUTH_TEACHERS('email')}  />
+                <EmailField source={SK.AUTH_TEACHERS('email')} />
+                <TextField source={SK.AUTH_TEACHERS('userName')} label="Name" />
+                <BooleanField source={SK.AUTH_TEACHERS('created')} looseValue />
                 <WithRecord
                     render={(record: AuthorizedTeacher) =>
                         !record?.created ? (

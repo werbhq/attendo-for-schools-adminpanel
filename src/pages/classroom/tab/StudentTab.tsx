@@ -4,18 +4,18 @@ import {
     EmailField,
     ListContextProvider,
     NumberField,
-    ReferenceField,
+    // ReferenceField,
     Tab,
     downloadCSV,
-    useDataProvider,
+    // useDataProvider,
     useList,
-    useRecordSelection,
-    useUnselectAll,
+    // useRecordSelection,
+    // useUnselectAll,
     TextField,
     useRecordContext,
 } from 'react-admin';
-import { Classroom } from 'types/models/classroom';
-import EditIcon from '@mui/icons-material/Edit';
+// import { Classroom } from 'types/models/classroom';
+// import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import DownloadIcon from '@mui/icons-material/Download';
 import jsonExport from 'jsonexport/dist';
@@ -26,10 +26,10 @@ import EditStudent from '../components/student/Edit';
 import {
     CustomStudentBulkDeleteButton,
     CustomStudentEditButton,
-    CustomVirtualStudentSaveButton,
+    // CustomVirtualStudentSaveButton,
     ImportButton,
 } from '../components/student/Buttons';
-import { LoadingButton } from '@mui/lab';
+// import { LoadingButton } from '@mui/lab';
 import { sortByRoll } from 'Utils/helpers';
 import SK from 'pages/source-keys';
 import { ClassroomFrontend } from 'types/frontend/classroom';
@@ -43,17 +43,17 @@ type studentDialog = {
 };
 
 const StudentTab = ({ label, path, ...props }: { label: string; path: string; props?: any }) => {
-    const dataProvider = useDataProvider();
+    // const dataProvider = useDataProvider();
     const record: ClassroomFrontend = useRecordContext();
 
-    const csvExportHeaders = record.isDerived
-        ? ['classId', 'id', 'email', 'regNo', 'rollNo', 'name', 'userName']
-        : ['id', 'email', 'regNo', 'rollNo', 'name', 'userName'];
+    // const csvExportHeaders = record.isDerived
+    //     ? ['classId', 'id', 'email', 'regNo', 'rollNo', 'name', 'userName']
+    //     : ['id', 'email', 'regNo', 'rollNo', 'name', 'userName'];
+    const csvExportHeaders =  ['id', 'email', 'regNo', 'rollNo', 'name', 'userName'];
+    // const [, { select }] = useRecordSelection(resource);
+    // const unselectAll = useUnselectAll(resource);
 
-    const [, { select }] = useRecordSelection(resource);
-    const unselectAll = useUnselectAll(resource);
-
-    const [isLoading, setIsLoading] = useState(false);
+    // const [isLoading, setIsLoading] = useState(false);
     const classroomStudents = Object.values(record.students).sort(sortByRoll);
 
     const [studentVirtualDialogOpen, setStudentVirtualDialogOpen] = useState(false);
@@ -64,46 +64,47 @@ const StudentTab = ({ label, path, ...props }: { label: string; path: string; pr
     });
 
     const [listData, setListData] = useState<Student[]>(classroomStudents.sort(sortByRoll));
-    const sort = record.isDerived ? { field: 'classId', order: 'ASC' } : { field: '', order: '' };
+    // const sort = record.isDerived ? { field: 'classId', order: 'ASC' } : { field: '', order: '' };
+    const sort = { field: '', order: '' };
     const listContext = useList({
         data: listData,
         resource,
         sort: sort,
     });
 
-    const virtualClassEditHandler = async (e: any) => {
-        const students = (e as Student[]) ?? classroomStudents;
+    // const virtualClassEditHandler = async (e: any) => {
+    //     const students = (e as Student[]) ?? classroomStudents;
 
-        if (!studentVirtualDialogOpen) {
-            setIsLoading(true);
+    //     if (!studentVirtualDialogOpen) {
+    //         setIsLoading(true);
 
-            const { data: classes } = await dataProvider.getMany<Classroom>(MAPPING.CLASSROOMS, {
-                ids: record?.parentClasses,
-            });
-            const fullStudents: Student[] = [];
+    //         const { data: classes } = await dataProvider.getMany<Classroom>(MAPPING.CLASSROOMS, {
+    //             ids: record?.parentClasses,
+    //         });
+    //         const fullStudents: Student[] = [];
 
-            classes?.forEach((e) => {
-                const studentsTemp = Object.values(e.students ?? {}).map((_e) => ({
-                    ..._e,
-                    classId: e.id,
-                }));
-                fullStudents.push(...studentsTemp);
-            });
+    //         classes?.forEach((e) => {
+    //             const studentsTemp = Object.values(e.students ?? {}).map((_e) => ({
+    //                 ..._e,
+    //                 classId: e.id,
+    //             }));
+    //             fullStudents.push(...studentsTemp);
+    //         });
 
-            setListData(fullStudents.sort(sortByRoll));
-            select(classroomStudents.map((e) => e.id) ?? []);
-            setStudentVirtualDialogOpen(true);
-            setIsLoading(false);
-        } else {
-            unselectAll();
-            setStudentVirtualDialogOpen(false);
-            setListData(students);
-        }
-    };
+    //         setListData(fullStudents.sort(sortByRoll));
+    //         select(classroomStudents.map((e) => e.id) ?? []);
+    //         setStudentVirtualDialogOpen(true);
+    //         setIsLoading(false);
+    //     } else {
+    //         unselectAll();
+    //         setStudentVirtualDialogOpen(false);
+    //         setListData(students);
+    //     }
+    // };
 
-    if (record.isDerived) {
-        listContext.onUnselectItems = () => virtualClassEditHandler(null);
-    }
+    // if (record.isDerived) {
+    //     listContext.onUnselectItems = () => virtualClassEditHandler(null);
+    // }
 
     return (
         <Tab label={label} path={path} {...props}>
@@ -114,7 +115,7 @@ const StudentTab = ({ label, path, ...props }: { label: string; path: string; pr
                 direction="row"
             >
                 <Stack spacing="10px" direction="row">
-                    {!!record?.isDerived ? (
+                    {/* {!!record?.isDerived ? (
                         <LoadingButton
                             size="medium"
                             variant="contained"
@@ -125,23 +126,23 @@ const StudentTab = ({ label, path, ...props }: { label: string; path: string; pr
                         >
                             Edit Students
                         </LoadingButton>
-                    ) : (
-                        <Button
-                            size="medium"
-                            variant="contained"
-                            startIcon={<AddIcon />}
-                            onClick={() => {
-                                setStudentDialog({
-                                    ...studentDialog,
-                                    add: true,
-                                    enable: true,
-                                    record: undefined,
-                                });
-                            }}
-                        >
-                            Add Student
-                        </Button>
-                    )}
+                    ) : ( */}
+                    <Button
+                        size="medium"
+                        variant="contained"
+                        startIcon={<AddIcon />}
+                        onClick={() => {
+                            setStudentDialog({
+                                ...studentDialog,
+                                add: true,
+                                enable: true,
+                                record: undefined,
+                            });
+                        }}
+                    >
+                        Add Student
+                    </Button>
+                    {/* )} */}
                 </Stack>
 
                 {!studentVirtualDialogOpen && (
@@ -170,22 +171,21 @@ const StudentTab = ({ label, path, ...props }: { label: string; path: string; pr
                 <Datagrid
                     sx={{ paddingTop: '30px' }}
                     bulkActionButtons={
-                        record.isDerived ? (
-                            studentVirtualDialogOpen && (
-                                <>
-                                    <CustomVirtualStudentSaveButton
-                                        list={listData}
-                                        saveHandler={virtualClassEditHandler}
-                                    />
-                                </>
-                            )
-                        ) : (
-                            <CustomStudentBulkDeleteButton setList={setListData} />
-                        )
+                        // record.isDerived ? (
+                        //     studentVirtualDialogOpen && (
+                        //         <>
+                        //             <CustomVirtualStudentSaveButton
+                        //                 list={listData}
+                        //                 saveHandler={virtualClassEditHandler}
+                        //             />
+                        //         </>
+                        //     )
+                        // ) :
+                        <CustomStudentBulkDeleteButton setList={setListData} />
                     }
                 >
                     <NumberField source={SK.STUDENT('rollNo')} />
-                    {record.isDerived && (
+                    {/* {record.isDerived && (
                         <ReferenceField
                             source={SK.STUDENT('classId')}
                             reference={MAPPING.CLASSROOMS}
@@ -193,19 +193,20 @@ const StudentTab = ({ label, path, ...props }: { label: string; path: string; pr
                         >
                             <TextField source={SK.STUDENT('id')} />
                         </ReferenceField>
-                    )}
-                    <TextField source={SK.STUDENT('regNo')} />
+                    )} */}
+                    {/* <TextField source={SK.STUDENT('regNo')} /> */}
+                    <TextField source={SK.STUDENT('admNo')} />
                     <TextField source={SK.STUDENT('name')} />
                     <EmailField source={SK.STUDENT('email')} />
-                    <TextField source={SK.STUDENT('userName')} />
-                    {!record.isDerived && (
-                        <CustomStudentEditButton
-                            state={{
-                                dialog: studentDialog,
-                                setDialog: setStudentDialog,
-                            }}
-                        />
-                    )}
+                    {/* <TextField source={SK.STUDENT('userName')} /> */}
+                    {/* {!record.isDerived && ( */}
+                    <CustomStudentEditButton
+                        state={{
+                            dialog: studentDialog,
+                            setDialog: setStudentDialog,
+                        }}
+                    />
+                    {/* )} */}
                 </Datagrid>
             </ListContextProvider>
 

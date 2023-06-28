@@ -1,3 +1,4 @@
+import SK from 'pages/source-keys';
 import { MAPPING } from 'provider/mapping';
 import { List, Datagrid, TextField, FunctionField, ReferenceField } from 'react-admin';
 
@@ -6,7 +7,7 @@ const AttendanceList = () => {
         <List exporter={false}>
             <Datagrid rowClick="show">
                 <ReferenceField
-                    source="classroom.id"
+                    source={SK.ATTENDANCE("classroom.id")}
                     label="Classroom Id"
                     reference={MAPPING.CLASSROOMS}
                     link="show"
@@ -14,7 +15,9 @@ const AttendanceList = () => {
                     {' '}
                     <TextField source="id" />
                 </ReferenceField>
-                <TextField source="attendance.date" label="Date" />
+
+                {/* need to check */}
+                <TextField source={SK.ATTENDANCE("attendances")} label="Date" />
                 <TextField source="semester" />
                 <TextField source="attendance.hour" label="Hour" />
                 <ReferenceField

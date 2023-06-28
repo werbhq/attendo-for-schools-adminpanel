@@ -1,12 +1,12 @@
-import { Edit, required, SimpleForm, TextInput } from 'react-admin';
+import SK from 'pages/source-keys';
+import { Edit, email, required, SimpleForm, TextInput } from 'react-admin';
 
 const AuthorizedTeacherEdit = () => (
     <Edit>
         <SimpleForm style={{ alignItems: 'stretch' }}>
             <TextInput disabled source="id" />
-            <TextInput source="email" validate={required()} />
-            <TextInput source="userName" label="name" validate={required()} />
-            <TextInput source="branch" validate={required()} />
+            <TextInput source={SK.AUTH_TEACHERS('email')} validate={[required(), email()]} />
+            <TextInput source={SK.AUTH_TEACHERS('userName')} label="name" validate={required()} />
         </SimpleForm>
     </Edit>
 );
