@@ -7,6 +7,7 @@ import { Classroom } from 'types/models/classroom';
 import { sortByRoll } from 'Utils/helpers';
 import { developers } from 'constants/developers';
 
+//TODO: CHECK 
 type ReportMap = Omit<Report, 'attendance'> & {
     attendance: { [subjectId: string]: ReportAttendance & { absent: number } };
 };
@@ -65,7 +66,7 @@ const ReportsProvider: DataProviderCustom<Report> = {
         );
 
         [...normalAttendances, ...virtualAttendances].forEach(
-            ({ subject, attendances: e, classroom: attendanceClassroom }) => {
+            ({  attendances: e, classroom: attendanceClassroom }) => {
                 const attendances = Object.values(e).filter((e) => !developers[e.teacherId]);
                 const totalAttendance: number = attendances.length;
 
@@ -77,19 +78,19 @@ const ReportsProvider: DataProviderCustom<Report> = {
 
                 // Initializing percentage values
                 students.forEach((e, k) => {
-                    if (students.get(k)?.attendance[subject.id] && !currentClassroom?.students[k]) {
+                    if (students.get(k)?.attendance[classroom.id] && !currentClassroom?.students[k]) {
                         return;
                     }
                     const val = {
                         ...e,
                         attendance: {
                             ...e.attendance,
-                            [subject.id]: {
-                                name: subject.name.toUpperCase(),
-                                subjectId: subject.id,
+                            [classroom.id]: {
+                                name: classroom.id.toUpperCase(),
+                                // subjectId: subject.id,
                                 percentage: currentClassroom?.students[k] ? 100 : -1,
                                 absent: 0,
-                                isVirtualClass: currentClassroom?.isDerived ?? false,
+                                isVirtualClass: false,
                             },
                         },
                     };
@@ -101,15 +102,15 @@ const ReportsProvider: DataProviderCustom<Report> = {
                         const student = students.get(absentee);
                         if (!student) return;
 
-                        const absent = student.attendance[subject.id].absent + 1;
+                        const absent = student.attendance[classroom.id].absent + 1;
                         const percentage = ((totalAttendance - absent) / totalAttendance) * 100;
 
                         students.set(absentee, {
                             ...student,
                             attendance: {
                                 ...student.attendance,
-                                [subject.id]: {
-                                    ...student.attendance[subject.id],
+                                [classroom.id]: {
+                                    ...student.attendance[classroom.id],
                                     absent,
                                     percentage,
                                 },
@@ -124,10 +125,9 @@ const ReportsProvider: DataProviderCustom<Report> = {
             .map((e) => ({
                 ...e,
                 attendance: Object.values(e.attendance).map(
-                    ({ name, percentage, subjectId, isVirtualClass }) => ({
+                    ({ name, percentage,  isVirtualClass }) => ({
                         name,
                         percentage,
-                        subjectId,
                         isVirtualClass,
                     })
                 ),

@@ -7,7 +7,7 @@ import { MAPPING } from '../mapping';
 import { AttendanceFrontEnd } from 'types/frontend/attendance';
 
 const convertAttendanceMini = (id: string, doc: ClassroomAttendance, classrooms: Classroom[]) => {
-    const { classroom, semester, subject, attendances } = doc;
+    const { classroom, attendances } = doc;
     const attendance = attendances[id];
 
     const students = classrooms.find((e) => e.id === classroom.id)?.students ?? {};
@@ -16,7 +16,6 @@ const convertAttendanceMini = (id: string, doc: ClassroomAttendance, classrooms:
 
     attendance.absentees = attendance.absentees.map((e) => {
         const values = [students[e].rollNo, students[e].name];
-        if (classroom.isDerived) values.unshift(students[e].classId ?? '');
         return values.join('. ');
     });
 
@@ -26,8 +25,6 @@ const convertAttendanceMini = (id: string, doc: ClassroomAttendance, classrooms:
         id: attendance.id,
         attendance,
         classroom,
-        semester,
-        subject,
         strength,
     };
 };

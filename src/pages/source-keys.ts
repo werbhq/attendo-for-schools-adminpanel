@@ -6,11 +6,11 @@ import { Classroom } from 'types/models/classroom';
 // import { Course } from 'types/models/courses';
 import { StudentShort } from 'types/models/student';
 // import { Subject } from 'types/models/subject';
-import { Teacher } from 'types/models/teacher';
+import { AuthorizedTeacher } from 'types/models/teacher';
 
 const SK = {
     ATTENDANCE: sourceKey<SourceKeys<ClassroomAttendance>>,
-    AUTH_TEACHERS: sourceKey<SourceKeys<Teacher>>,
+    AUTH_TEACHERS: sourceKey<SourceKeys<AuthorizedTeacher>>,
     // BATCHES: sourceKey<SourceKeys<Batch>>,
     CLASSROOM: sourceKey<SourceKeys<Classroom>>,
     // SUBJECT: sourceKey<SourceKeys<Subject>>,

@@ -38,9 +38,8 @@ const AuthorizedTeacherCreate = () => {
     return (
         <Create>
             <SimpleForm style={{ alignItems: 'stretch' }} onSubmit={onSubmit}>
-                <TextInput source={SK.AUTH_TEACHERS('emailId')} validate={[required(), email()]} />
-                {/* <TextInput source={SK.AUTH_TEACHERS('username')} label="name" validate={required()} /> */}
-                <TextInput source={SK.AUTH_TEACHERS('name')} label="name" validate={required()} />
+                <TextInput source={SK.AUTH_TEACHERS('email')} validate={[required(), email()]} />
+                <TextInput source={SK.AUTH_TEACHERS('userName')} label="name" validate={required()} />
             </SimpleForm>
         </Create>
     );
