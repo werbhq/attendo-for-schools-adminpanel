@@ -1,10 +1,8 @@
-//TODO: DELETE
+import { Timestamp } from 'firebase-admin/firestore';
 
-// import { Timestamp } from 'firebase-admin/firestore';
-
-// export interface Meta {
-//     lastUpdated: Timestamp;
-//     createdAt: Timestamp;
-//     version: number;
-//     deleted: boolean;
-// }
+export interface Meta {
+    lastUpdated: Timestamp;
+    createdAt: Timestamp;
+    version: number;
+    deleted: boolean;
+}

@@ -2,7 +2,7 @@ import { MAPPING } from '../mapping';
 import { FieldPath, dataProvider, db } from '../firebase';
 import { DataProviderCustom } from 'types/DataProvider';
 import { Report, ReportAttendance } from 'types/frontend/report';
-import { ClassroomAttendance } from 'types/models/attendance';
+import { SubjectAttendance } from 'types/models/attendance';
 import { Classroom } from 'types/models/classroom';
 import { sortByRoll } from 'Utils/helpers';
 import { developers } from 'constants/developers';
@@ -28,7 +28,7 @@ const ReportsProvider: DataProviderCustom<Report> = {
                 .where('semester', '==', semester)
                 .where('classroom.id', '==', classroomId)
                 .get()
-        ).docs.map((e) => e.data() as ClassroomAttendance);
+        ).docs.map((e) => e.data() as SubjectAttendance);
 
         const fieldPath = new FieldPath('classroom', 'parentClasses', classroomId, 'id');
         const virtualAttendances = (
@@ -37,7 +37,7 @@ const ReportsProvider: DataProviderCustom<Report> = {
                 .where('semester', '==', semester)
                 .where(fieldPath, '==', classroomId)
                 .get()
-        ).docs.map((e) => e.data() as ClassroomAttendance);
+        ).docs.map((e) => e.data() as SubjectAttendance);
 
         if (normalAttendances.length === 0 && virtualAttendances.length === 0) {
             return {

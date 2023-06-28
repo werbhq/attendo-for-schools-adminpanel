@@ -1,10 +1,8 @@
-//TODO: DELETE
+export interface Course {
+    id: string;
+    totalSemesters: number;
+}
 
-// export interface Course {
-//     id: string;
-//     totalSemesters: number;
-// }
-
-// export interface CoursesIndex {
-//     courses: { [course: string]: Course };
-// }
+export interface CoursesIndex {
+    courses: { [course: string]: Course };
+}

@@ -23,7 +23,7 @@ import {
 import { useState, useRef } from 'react';
 import { MAPPING } from 'provider/mapping';
 import { sortByRoll } from 'Utils/helpers';
-import { StudentShort as Student, StudentShort } from 'types/models/student';
+import { StudentShort as Student } from 'types/models/student';
 import { Classroom } from 'types/models/classroom';
 import CSVReader from 'react-csv-reader';
 
@@ -193,30 +193,30 @@ export const ImportButton = ({
             return notify(message, { type: 'error' });
         }
 
-        // if (record.isDerived) {
-        //     const parentClasses = record.parentClasses;
-        //     const invalidClassId = data.some((e) => !parentClasses.includes(e.classId));
+        if (record.isDerived) {
+            const parentClasses = record.parentClasses;
+            const invalidClassId = data.some((e) => !parentClasses.includes(e.classId));
 
-        //     if (invalidClassId) {
-        //         const message = `ClassIds don't match the Parent Classes Proper classIds are ${parentClasses.join(
-        //             ','
-        //         )}`;
-        //         return notify(message, { type: 'error' });
-        //     }
+            if (invalidClassId) {
+                const message = `ClassIds don't match the Parent Classes Proper classIds are ${parentClasses.join(
+                    ','
+                )}`;
+                return notify(message, { type: 'error' });
+            }
 
-        //     data = data.filter((e) => parentClasses.includes(e.classId));
-        // } else {
-        const classId = record.id;
-        let containedClassId;
-        if (data.some((e) => e.hasOwnProperty('classId'))) {
-            containedClassId = data.filter((e) => e.classId === classId);
+            data = data.filter((e) => parentClasses.includes(e.classId));
         } else {
-            containedClassId = data;
+            const classId = record.id;
+            let containedClassId;
+            if (data.some((e) => e.hasOwnProperty('classId'))) {
+                containedClassId = data.filter((e) => e.classId === classId);
+            } else {
+                containedClassId = data;
+            }
+            data = containedClassId;
         }
-        data = containedClassId;
-        // }
 
-        await dataProvider.update<StudentShort>(MAPPING.STUDENTS, {
+        await dataProvider.update<Student>(MAPPING.STUDENTS, {
             id: record.id,
             data,
             previousData: Object.values(record.students),

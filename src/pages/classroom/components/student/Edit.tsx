@@ -15,7 +15,7 @@ import { MAPPING } from 'provider/mapping';
 import { DialogActions, DialogContent, DialogContentText, DialogTitle, Stack } from '@mui/material';
 import { autoCapitalize } from 'Utils/helpers';
 import { useState } from 'react';
-import { StudentShort as Student, StudentShort } from 'types/models/student';
+import { StudentShort as Student } from 'types/models/student';
 import { Classroom } from 'types/models/classroom';
 import SK from 'pages/source-keys';
 
@@ -24,7 +24,7 @@ const CustomDeleteButton = ({
 }: {
     handleDelete: (newRecord: Student) => Promise<void>;
 }) => {
-    const record = useRecordContext<StudentShort>();
+    const record = useRecordContext<Student>();
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const handleClose = () => setShowDeleteDialog(!showDeleteDialog);
 
@@ -104,7 +104,7 @@ export default function EditStudent({
         const newRecord = e as Student;
         const index = students.findIndex((e) => e.id === newRecord.id);
         if (index !== -1) newStudents[index] = newRecord;
-        else newStudents.push({ ...newRecord, id: newRecord.admNo });
+        else newStudents.push({ ...newRecord, id: newRecord.email });
 
         await dataProvider.update<Student>(url, {
             id,
@@ -126,7 +126,7 @@ export default function EditStudent({
             1
         );
 
-        await dataProvider.update<StudentShort>(url, {
+        await dataProvider.update<Student>(url, {
             id,
             data: newStudents,
             previousData: students,
@@ -158,15 +158,15 @@ export default function EditStudent({
                     required
                 />
                 <TextInput
-                    source={SK.STUDENT('admNo')}
-                    label="Admission Number"
+                    source={SK.STUDENT('regNo')}
+                    label="Registration Number"
                     sx={style}
                     required
                     format={(props) => props && autoCapitalize(props)}
                 />
                 <TextInput source={SK.STUDENT('name')} label="Name" sx={style} required />
                 <TextInput source={SK.STUDENT('email')} label="Email" sx={style} required />
-                {/* <TextInput source={SK.STUDENT('userName')} label="User Name" sx={style} /> */}
+                <TextInput source={SK.STUDENT('userName')} label="User Name" sx={style} />
                 <Stack direction="row" spacing={3}>
                     <SaveButton label={dialog.add ? 'Add' : 'Save'} />
                     {!dialog.add && <CustomDeleteButton handleDelete={handleDelete} />}

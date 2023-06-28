@@ -1,12 +1,12 @@
-// import { SubjectDoc } from '../types/models/subject';
+import { SubjectDoc } from '../types/models/subject';
 import { convertSingleValueListToSelectList } from './helpers';
 
 export class Schemes {
-    // _schemes: SubjectDoc[];
+    _schemes: SubjectDoc[];
 
-    // constructor(schemeData: SubjectDoc[]) {
-    //     this._schemes = schemeData;
-    // }
+    constructor(schemeData: SubjectDoc[]) {
+        this._schemes = schemeData;
+    }
 
     static classNames = [
         { id: '1', name: '1', isDerived: false },
@@ -17,57 +17,57 @@ export class Schemes {
         { id: 'l', name: 'Lab', isDerived: true },
     ];
 
-    // static groupNames = [
-    //     { id: 'A', name: 'A' },
-    //     { id: 'B', name: 'B' },
-    //     { id: 'C', name: 'C' },
-    //     { id: 'D', name: 'D' },
-    // ];
+    static groupNames = [
+        { id: 'A', name: 'A' },
+        { id: 'B', name: 'B' },
+        { id: 'C', name: 'C' },
+        { id: 'D', name: 'D' },
+    ];
 
-    // derivedClasses = Schemes.classNames.filter((e) => e.isDerived).map((e) => e.id);
+    derivedClasses = Schemes.classNames.filter((e) => e.isDerived).map((e) => e.id);
 
-    // isDerived = (className: string | null) => this.derivedClasses.includes(className ?? '');
+    isDerived = (className: string | null) => this.derivedClasses.includes(className ?? '');
 
-    // getCourses = () => {
-    //     const courses = new Set<SubjectDoc['course']>();
-    //     this._schemes.forEach((e) => courses.add(e.course));
-    //     return [...courses].map(convertSingleValueListToSelectList);
-    // };
+    getCourses = () => {
+        const courses = new Set<SubjectDoc['course']>();
+        this._schemes.forEach((e) => courses.add(e.course));
+        return [...courses].map(convertSingleValueListToSelectList);
+    };
 
-    // getSchemes = (courseId: string | null) => {
-    //     return this._schemes
-    //         .filter(({ course }) => course === courseId)
-    //         .map(({ id }) => id)
-    //         .map(convertSingleValueListToSelectList);
-    // };
+    getSchemes = (courseId: string | null) => {
+        return this._schemes
+            .filter(({ course }) => course === courseId)
+            .map(({ id }) => id)
+            .map(convertSingleValueListToSelectList);
+    };
 
-    // getBranches = (schemeId: string | null) => {
-    //     const branches = new Set<string>();
-    //     const schemeData = this._schemes.find(({ id }) => id === schemeId);
-    //     schemeData?.semesters?.forEach((sem) => {
-    //         sem.branchSubs.forEach(({ branch }) => branches.add(branch));
-    //     });
-    //     return [...branches].map(convertSingleValueListToSelectList);
-    // };
+    getBranches = (schemeId: string | null) => {
+        const branches = new Set<string>();
+        const schemeData = this._schemes.find(({ id }) => id === schemeId);
+        schemeData?.semesters?.forEach((sem) => {
+            sem.branchSubs.forEach(({ branch }) => branches.add(branch));
+        });
+        return [...branches].map(convertSingleValueListToSelectList);
+    };
 
-    // getSemesters = (schemeId: string | null) => {
-    //     const schemeData = this._schemes.find(({ id }) => id === schemeId);
-    //     return (
-    //         schemeData?.semesters?.map(({ semester }) => {
-    //             return { id: semester, name: semester };
-    //         }) || []
-    //     );
-    // };
+    getSemesters = (schemeId: string | null) => {
+        const schemeData = this._schemes.find(({ id }) => id === schemeId);
+        return (
+            schemeData?.semesters?.map(({ semester }) => {
+                return { id: semester, name: semester };
+            }) || []
+        );
+    };
 
-    // getSubjects = (schemeId: string | null, branchId: string | null, semesterId: number | null) => {
-    //     const schemeData = this._schemes.find(({ id }) => id === schemeId);
-    //     const semesters = schemeData?.semesters?.find(({ semester }) => semester === semesterId);
-    //     const branch = semesters?.branchSubs?.find(({ branch }) => branch === branchId);
+    getSubjects = (schemeId: string | null, branchId: string | null, semesterId: number | null) => {
+        const schemeData = this._schemes.find(({ id }) => id === schemeId);
+        const semesters = schemeData?.semesters?.find(({ semester }) => semester === semesterId);
+        const branch = semesters?.branchSubs?.find(({ branch }) => branch === branchId);
 
-    //     return (
-    //         branch?.subjects?.map(({ code, id, name }) => {
-    //             return { id, name, code };
-    //         }) || []
-    //     );
-    // };
+        return (
+            branch?.subjects?.map(({ code, id, name }) => {
+                return { id, name, code };
+            }) || []
+        );
+    };
 }
