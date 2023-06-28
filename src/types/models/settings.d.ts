@@ -5,5 +5,4 @@ export interface Settings extends BaseClass {
     instituteType: string;
     stds: string[];
     slots: string[];
-    currentYear: number;
 }

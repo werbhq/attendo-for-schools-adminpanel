@@ -4,12 +4,11 @@ import {
     TopToolbar,
     ExportButton,
     downloadCSV,
-    // useDataProvider,
+    useDataProvider,
     useRecordContext,
 } from 'react-admin';
 import { MAPPING } from 'provider/mapping';
-import { Stack } from '@mui/material';
-// import { Box, MenuItem, Select, Stack, Typography } from '@mui/material';
+import { Box, MenuItem, Select, Stack, Typography } from '@mui/material';
 import jsonExport from 'jsonexport/dist';
 import AttendanceDataGrid from '../components/report/ShowAttendanceGrid';
 import { useEffect, useState } from 'react';
@@ -23,7 +22,7 @@ const ReportTab = ({ label, path, ...props }: { label: string; path: string; pro
     // const [semester, setSemester] = useState(record.batch.semester ?? 1);
     // const [semesterChoices, setSemesterChoices] = useState<number[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    // const dataProvider = useDataProvider();
+    const dataProvider = useDataProvider();
 
     useEffect(() => {
         setIsLoading(true);
@@ -51,12 +50,10 @@ const ReportTab = ({ label, path, ...props }: { label: string; path: string; pro
         //         data[`${e.name} [${e.subjectId.toUpperCase()}]`] =
         //             e.percentage === -1 ? '-' : `${e.percentage}%`;
         //     });
-
-        //TODO: NEED TO CHECK
         const dataForExport = data.map(({ id, name, rollNo, admNo, attendance }) => {
             const data: { [index: string]: string | number } = { id, admNo, rollNo, name };
             attendance.forEach((e) => {
-                data[`${e.name} [${e.name.toUpperCase()}]`] =
+                data[`${e.name} [${e.subjectId.toUpperCase()}]`] =
                     e.percentage === -1 ? '-' : `${e.percentage}%`;
             });
             return data;

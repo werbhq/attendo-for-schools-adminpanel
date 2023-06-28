@@ -11,7 +11,7 @@ import {
 import { AuthTeachersProviderExtended } from 'provider/custom/authorizedTeachers';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { useState } from 'react';
-import { AuthorizedTeacher } from 'types/models/teacher';
+import { Teacher } from 'types/models/teacher';
 import SK from 'pages/source-keys';
 
 const AuthorizedTeacherShow = () => {
@@ -19,7 +19,7 @@ const AuthorizedTeacherShow = () => {
     const refresh = useRefresh();
     const [loading, setLoading] = useState(false);
 
-    const handleCreation = async (record: AuthorizedTeacher) => {
+    const handleCreation = async (record: Teacher) => {
         setLoading(true);
         try {
             const { message, success } = await AuthTeachersProviderExtended.createEmails([
@@ -36,12 +36,11 @@ const AuthorizedTeacherShow = () => {
     return (
         <Show>
             <SimpleShowLayout>
-            <TextField source="id" />
-                <EmailField source={SK.AUTH_TEACHERS('email')} />
-                <TextField source={SK.AUTH_TEACHERS('userName')} label="Name" />
-                <BooleanField source={SK.AUTH_TEACHERS('created')} looseValue />
+                <TextField source={SK.AUTH_TEACHERS('id')} />
+                <EmailField source={SK.AUTH_TEACHERS('emailId')} />
+                <TextField source={SK.AUTH_TEACHERS('name')} label="Name" />
                 <WithRecord
-                    render={(record: AuthorizedTeacher) =>
+                    render={(record: Teacher) =>
                         !record?.created ? (
                             <LoadingButton
                                 variant="contained"

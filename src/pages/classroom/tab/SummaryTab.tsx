@@ -1,5 +1,5 @@
 import {
-    // BooleanField,
+    BooleanField,
     TextField,
     FunctionField,
     SimpleShowLayout,
@@ -7,22 +7,22 @@ import {
     ReferenceArrayField,
     ChipField,
     SingleFieldList,
-    // useRecordContext,
-    // ArrayField,
-    // Datagrid,
-    // SelectField,
-    // ReferenceField,
+    useRecordContext,
+    ArrayField,
+    Datagrid,
+    SelectField,
+    ReferenceField,
 } from 'react-admin';
-import { Button, Stack } from '@mui/material';
+import { Button, Stack, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-// import { Schemes } from 'Utils/Schemes';
+import { Schemes } from 'Utils/Schemes';
 import { MAPPING } from 'provider/mapping';
 import { Classroom } from 'types/models/classroom';
 import SK from 'pages/source-keys';
 import EmptySingleDisplay from 'components/ui/EmptySingleField';
 import { useState } from 'react';
 import EditClassroom from '../components/classroom/Edit';
-// import { ClassroomFrontend } from 'types/frontend/classroom';
+import { ClassroomFrontend } from 'types/frontend/classroom';
 
 const SummaryTab = ({ label, ...rest }: { label: string }) => {
     // const record: ClassroomFrontend = useRecordContext();
@@ -84,23 +84,22 @@ const SummaryTab = ({ label, ...rest }: { label: string }) => {
                         </SingleFieldList>
                         <EmptySingleDisplay fieldName={SK.CLASSROOM('parentClasses')} />
                     </ReferenceArrayField>
-                )}*/}
+                )}
 
-                {/* {isVirtual && ( */}
-                <ReferenceArrayField
-                    label="Teachers"
-                    source={SK.CLASSROOM('teachers')}
-                    reference={MAPPING.AUTH_TEACHERS}
-                    resource={MAPPING.AUTH_TEACHERS}
-                    sx={{ margin: '10px 0px' }}
-                >
-                    <SingleFieldList linkType="show">
-                        <ChipField source={SK.AUTH_TEACHERS('userName')} />
-                    </SingleFieldList>
-                    <EmptySingleDisplay fieldName={SK.CLASSROOM('teachers')} />
-                </ReferenceArrayField>
-
-                {/* )} } */}
+                {isVirtual && (
+                    <ReferenceArrayField
+                        label="Teachers"
+                        source={SK.CLASSROOM('teachers')}
+                        reference={MAPPING.AUTH_TEACHERS}
+                        resource={MAPPING.AUTH_TEACHERS}
+                        sx={{ margin: '10px 0px' }}
+                    >
+                        <SingleFieldList linkType="show">
+                            <ChipField source={SK.AUTH_TEACHERS('userName')} />
+                        </SingleFieldList>
+                        <EmptySingleDisplay fieldName={SK.CLASSROOM('teachers')} />
+                    </ReferenceArrayField>
+                )} */}
 
                 <FunctionField
                     label="Students Count"

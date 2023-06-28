@@ -7,8 +7,8 @@ const AuthorizedTeacherEdit = () => (
             <TextInput disabled source={SK.AUTH_TEACHERS('id')} />
             {/* <TextInput source="email" validate={required()} />
             <TextInput source="userName" label="name" validate={required()} /> */}
-            <TextInput source={SK.AUTH_TEACHERS('email')} validate={[required(), email()]} />
-            <TextInput source={SK.AUTH_TEACHERS('userName')} label="name" validate={required()} />
+            <TextInput source={SK.AUTH_TEACHERS('emailId')} validate={[required(), email()]} />
+            <TextInput source={SK.AUTH_TEACHERS('name')} label="name" validate={required()} />
         </SimpleForm>
     </Edit>
 );

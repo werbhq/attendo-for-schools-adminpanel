@@ -31,8 +31,8 @@ const MyDatagridRow = ({
             ))}
             {record?.attendance.sort(sorter).map((e) => {
                 return (
-                    <TableCell key={`${e.name}`}>
-                        <Tooltip title={`${e.name} (${e.name.toUpperCase()})`}>
+                    <TableCell key={`${e.subjectId}`}>
+                        <Tooltip title={`${e.name} (${e.subjectId.toUpperCase()})`}>
                             <Typography variant="body2">
                                 <span
                                     style={{
@@ -58,8 +58,8 @@ const DatagridHeader = (props: { children?: any[]; data?: Report[] }) => {
 
     const subjects =
         props.data && props.data?.length !== 0
-            ? props.data[0].attendance.map(({  name, isVirtualClass }) => ({
-                  id: name.toUpperCase(),
+            ? props.data[0].attendance.map(({ subjectId, name, isVirtualClass }) => ({
+                  id: subjectId.toUpperCase(),
                   name,
                   isVirtualClass,
               }))

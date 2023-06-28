@@ -46,6 +46,9 @@ const App = () => (
         layout={CustomLayout}
     >
         <Resource {...AuthTeachers} />
+        {/* <Resource {...Courses} />
+        <Resource {...Subject} />
+        <Resource {...Batches} /> */}
         <Resource {...Classroom} />
         <Resource {...Attendance} />
     </Admin>

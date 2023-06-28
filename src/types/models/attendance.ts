@@ -1,10 +1,9 @@
 
 import type{ BaseClass } from './base_class';
 import type { ClassroomShort } from './classroom';
-import { StudentShort } from './student';
 import type { TeacherShort } from './teacher';
 
-export interface AttendanceShort extends BaseClass{
+export interface AttendanceShort {
     id: string;
     date: string;
     dateTime: number;
@@ -20,7 +19,7 @@ export interface Attendance extends AttendanceShort {
     leaves?: string[];
 }
 
-export interface AttendanceMini extends BaseClass {
+export interface AttendanceMini {
     id: string;
     date: string;
     dateTime: number;
@@ -36,6 +35,7 @@ export interface ClassroomAttendance extends BaseClass{
     id: string;
     classroom: ClassroomShort;
     teachers: { [id: string]: TeacherShort };
+    semester: number;
     attendances: { [id: string]: AttendanceMini };
 }
 
@@ -70,18 +70,3 @@ export function ClassroomAttendanceToAttendances(data: ClassroomAttendance) {
     return attendanceData;
 }
 
-interface _StudentAttendance extends StudentShort {
-    attendance: {
-        classroomId: string;
-        percentage: number;
-    }[];
-}
-
-export interface AttendanceReport {
-    range?: {
-        from: Date; // Will be monthly
-        to: Date; // Will be monthly
-    };
-    classroomId: string;
-    attendances: _StudentAttendance[];
-}

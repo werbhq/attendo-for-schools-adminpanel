@@ -84,9 +84,10 @@ const AuthorizedTeacherList = () => {
             actions={<TopToolBar />}
         >
             <Datagrid rowClick="show" bulkActionButtons={<PostBulkActionButtons />}>
-                <EmailField source={SK.AUTH_TEACHERS('email')} />
-                <TextField source={SK.AUTH_TEACHERS('userName')} label="Name" />
+                <EmailField source={SK.AUTH_TEACHERS('emailId')} />
+                <TextField source={SK.AUTH_TEACHERS('name')} label="Name" />
                 <BooleanField source={SK.AUTH_TEACHERS('created')} looseValue sortable={false} />
+                
             </Datagrid>
         </List>
     );

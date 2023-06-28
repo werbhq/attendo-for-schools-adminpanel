@@ -10,6 +10,7 @@ export interface TeacherShort {
 }
 
 export interface Teacher extends TeacherShort {
+    created: boolean;
     userName?: string;
     status: string;
     phone?: string;
@@ -18,20 +19,4 @@ export interface Teacher extends TeacherShort {
     };
 }
 
-export interface AuthorizedTeacher {
-    id: string;
-    email: string;
-    userName: string;
-    created: boolean;
-}
-export interface AuthorizedTeacherIndex {
-    teachers: {
-        [email: string]: AuthorizedTeacher;
-    };
-}
 
-export interface TeachersIndex {
-    teachers: {
-        [key: string]: TeacherShort;
-    };
-}
