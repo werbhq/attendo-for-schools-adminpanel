@@ -10,13 +10,12 @@ export interface ClassroomShort extends BaseClass {
 }
 
 export interface Classroom extends ClassroomShort {
-    
+    instituteId: string;
     students: { [id: string]: StudentShort };
     teachers: { [id: string]: TeacherShort };
 }
 
 export function ClassroomToClassroomShort(data: Classroom) {
-
     const classroomShort: ClassroomShort = {
         id: data.id,
         std: data.std,

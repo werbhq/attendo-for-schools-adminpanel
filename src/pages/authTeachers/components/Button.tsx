@@ -18,6 +18,7 @@ export const ImportButton = ({ csvExportHeaders, ...rest }: { csvExportHeaders: 
     const fileLoadHandler = async (data: AuthorizedTeacher[]) => {
         let filteredData = [];
         const record = await dataProvider.getList(resource, defaultParams).then((e) => e.data); //whole data will be read only while importing
+        console.log(record);
         const invalidHeader = data.some((e) => {
             const keys = Object.keys(e).sort();
             const containsAllHeaders = csvExportHeaders.every((header) => keys.includes(header));
@@ -29,23 +30,30 @@ export const ImportButton = ({ csvExportHeaders, ...rest }: { csvExportHeaders: 
         } else {
             filteredData = data.filter((e) => {
                 const matchingRecord = record.find(({ id }) => id === e.id);
-                const { id, name } = e;
+                const { id } = e;
                 const message = matchingRecord
-                  ? `Updated data of ${name} teacher`
-                  : `Updated ${data.length} Teachers`;
-              
-                const shouldInclude = matchingRecord ? e : !record.some(({ id: recordId }) => recordId === id);
-                
+                    ? `No updation`
+                    : `Updated ${data.length} Teachers`;
+
+                const shouldInclude = matchingRecord
+                    ? e
+                    : !record.some(({ id: recordId }) => recordId === id);
                 refresh();
                 notify(message, {
-                  type: 'success',
+                    type: 'success',
                 });
-                
+
                 return shouldInclude;
-              });              
-            
+            });
         }
-        filteredData.forEach((e) => update(resource, { id: e.id, data: e }));
+        filteredData.forEach((e) =>
+            
+            {
+                e.created = false;
+                e.id = e.emailId;
+                update(resource, { id: e.id, data: e });
+            }
+        );
     };
 
     return (
@@ -67,7 +75,7 @@ export const ImportButton = ({ csvExportHeaders, ...rest }: { csvExportHeaders: 
                 }}
                 inputRef={(ref: HTMLInputElement) => {
                     importRef.current = ref;
-                  }}
+                }}
                 inputStyle={{ display: 'none' }}
                 onFileLoaded={fileLoadHandler}
                 onError={() => notify(`Error Importing CSV`, { type: 'error' })}

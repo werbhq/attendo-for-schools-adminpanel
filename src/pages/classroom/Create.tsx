@@ -15,7 +15,7 @@ import { MAPPING } from 'provider/mapping';
 import { getClassroomId } from 'Utils/helpers';
 // import { Schemes } from 'Utils/Schemes';
 // import { Subject, SubjectDoc } from 'types/models/subject';
-import { defaultParams } from 'provider/firebase';
+import { authProviderLegacy, defaultParams } from 'provider/firebase';
 import { Classroom } from 'types/models/classroom';
 import { AuthorizedTeacher, TeacherShort } from 'types/models/teacher';
 
@@ -28,6 +28,7 @@ const url = MAPPING.CLASSROOMS;
 const CreateClassroom = ({
     // schemes: schemeData,
     // batchData,
+
     teacherData,
 }: {
     // schemes: SubjectDoc[];
@@ -61,11 +62,23 @@ const CreateClassroom = ({
 
         return errors;
     };
+    const fetchPermission = async () => {
+        let instituteId = '';
+        try {
+            const permission = await authProviderLegacy.getPermissions({});
+            instituteId = permission['institute'];
+        } catch (e: any) {
+            notify(e.message, { type: 'error' });
+        }
+        return instituteId;
+    };
+    const transformSubmit = async (props: any) => {
+       
 
-    const transformSubmit = (props: any) => {
         const record = props as Classroom;
         const classroomId = record.std + '-' + record.division + '-' + record.year;
         console.log(classroomId);
+        const instituteId = await fetchPermission();
         const common = {
             id: classroomId,
             students: record.students ?? {},
@@ -78,6 +91,7 @@ const CreateClassroom = ({
                     [teacher.id]: teacher,
                 };
             }, {}),
+            instituteId: instituteId,
         };
 
         let finalData: Classroom;
@@ -88,17 +102,17 @@ const CreateClassroom = ({
         };
         finalData = classroomData;
         console.log(finalData);
-        update(
-            url,
-            { id: finalData.id, data: finalData },
-            {
-                onSuccess: () => {
-                    notify(`Added ${finalData.id}`, { type: 'success' });
-                    refresh();
-                    redirect('list', url);
-                },
-            }
-        );
+        // update(
+        //     url,
+        //     { id: finalData.id, data: finalData },
+        //     {
+        //         onSuccess: () => {
+        //             notify(`Added ${finalData.id}`, { type: 'success' });
+        //             refresh();
+        //             redirect('list', url);
+        //         },
+        //     }
+        // );
 
         return finalData;
     };
@@ -154,7 +168,6 @@ const ClassroomsCreate = () => {
         //     .getList<SubjectDoc>(MAPPING.SUBJECT, defaultParams)
         //     .then((e) => setData(e.data));
     };
-
     useEffect(() => {
         setLoading(true);
         fetchData();

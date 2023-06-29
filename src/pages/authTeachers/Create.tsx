@@ -23,14 +23,26 @@ const AuthorizedTeacherCreate = () => {
     const notify = useNotify();
     const redirect = useRedirect();
     const dataProvider = useDataProvider();
+    const checkUpdate = async(data: any) => {
+        let isUpdate: boolean = false;
+       await  dataProvider.getList(url, defaultParams).then((e) => {
+            console.log(e.data);
+            console.log(data);
+            if (e.data.includes(data)) isUpdate = false;
+            else {
+                if (e.data.findIndex((f) => f.emailId === data.emailId) != -1) {
+                    console.log('ho');
+                    isUpdate = false;
+                } else isUpdate = true;
+            }
+        });
+        return isUpdate;
+    };
     const onSubmit = async (data: any) => {
         const oldData = data;
-        let isUpdate = true;
-        data = { ...data, id: data.email, created: false };
-        dataProvider.getList(url, defaultParams).then((e) => {
-            if (e.data.includes(data)) isUpdate = false;
-            else isUpdate = true;
-        });
+        const isUpdate = await checkUpdate(data);
+        data = { ...data, id: data.emailId, created: false };
+
         console.log(isUpdate);
         if (isUpdate === true) {
             await dataProvider.update<AuthorizedTeacher>(url, {
@@ -52,7 +64,7 @@ const AuthorizedTeacherCreate = () => {
         <Create>
             <SimpleForm style={{ alignItems: 'stretch' }} onSubmit={onSubmit}>
                 <TextInput source={SK.AUTH_TEACHERS('emailId')} validate={[required(), email()]} />
-                <TextInput source={SK.AUTH_TEACHERS('name')} label="Namfe" validate={required()} />
+                <TextInput source={SK.AUTH_TEACHERS('name')} label="Name" validate={required()} />
                 <TextInput source={SK.AUTH_TEACHERS('phone')} label="Phone" validate={required()} />
             </SimpleForm>
         </Create>

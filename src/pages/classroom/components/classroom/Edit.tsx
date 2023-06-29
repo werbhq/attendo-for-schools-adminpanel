@@ -12,7 +12,7 @@ import {
     useUpdate,
 } from 'react-admin';
 import { MAPPING } from 'provider/mapping';
-import { defaultParams } from 'provider/firebase';
+import { authProviderLegacy, defaultParams } from 'provider/firebase';
 import { Classroom } from 'types/models/classroom';
 import { AuthorizedTeacher, TeacherShort } from 'types/models/teacher';
 import SK from 'pages/source-keys';
@@ -37,9 +37,19 @@ const EditClassroom = ({ teacherData, state }: { teacherData: TeacherShort[]; st
 
         return errors;
     };
-
+    const fetchPermission = async () => {
+        let instituteId = '';
+        try {
+            const permission = await authProviderLegacy.getPermissions({});
+            instituteId = permission['institute'];
+        } catch (e: any) {
+            notify(e.message, { type: 'error' });
+        }
+        return instituteId;
+    };
     const onSubmit = async (props: any) => {
         const propRecord = props as Classroom;
+        const instituteId = await fetchPermission();
 
         const common = {
             id: propRecord.std+"-"+propRecord.division+"-"+propRecord.year,
@@ -53,6 +63,7 @@ const EditClassroom = ({ teacherData, state }: { teacherData: TeacherShort[]; st
                 };
             }, {}),
             students: propRecord.students,
+            instituteId: instituteId,
         };
 
         let finalData: Classroom;

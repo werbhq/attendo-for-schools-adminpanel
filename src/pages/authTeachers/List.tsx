@@ -39,7 +39,7 @@ const filters = [
 const AuthorizedTeacherList = () => {
     const notify = useNotify();
     const refresh = useRefresh();
-    const csvExportHeaders = ['id', 'email', 'branch', 'userName'];
+    const csvExportHeaders = ['emailId', 'name', 'phone'];
     const PostBulkActionButtons = (data: BulkActionProps) => {
         return (
             <>
@@ -89,7 +89,7 @@ const AuthorizedTeacherList = () => {
             actions={<TopToolBar />}
         >
             <Datagrid rowClick="show" bulkActionButtons={<PostBulkActionButtons />}>
-                <EmailField source={SK.AUTH_TEACHERS('emailId')} label="Email Id"/>
+                <EmailField source={SK.AUTH_TEACHERS('emailId')} label="Email Id" />
                 <TextField source={SK.AUTH_TEACHERS('name')} label="Name" />
                 <BooleanField source={SK.AUTH_TEACHERS('created')} looseValue sortable={false} />
                 <TextField source={SK.AUTH_TEACHERS('phone')} label="Phone Number" />

@@ -68,7 +68,7 @@ const AuthorizedTeacherShow = () => {
             <SimpleShowLayout>
                 <TextField source={SK.AUTH_TEACHERS('emailId')} />
                 <TextField source={SK.AUTH_TEACHERS('name')} label="Name" />
-                <EmailField source={SK.AUTH_TEACHERS('phone')} />
+                <TextField source={SK.AUTH_TEACHERS('phone')} label="Phone Number"/>
                 <BooleanField source={SK.AUTH_TEACHERS('created')} looseValue />
                 <WithRecord
                     render={(record: AuthorizedTeacher) =>

@@ -55,7 +55,6 @@ const AuthTeachersProvider: DataProviderCustom<AuthorizedTeacher> = {
     update: async (resource, params, providers) => {
         const { id, data } = params;
         const { firebaseCollection } = providers;
-        console.log('hi');
         const fieldPath = new FieldPath('teachers', id as string);
         await firebaseCollection(MAPPING.DATA).doc(MAPPING.AUTH_TEACHERS).update(fieldPath, data);
         return { data, status: 200 };
