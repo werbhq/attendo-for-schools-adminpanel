@@ -19,14 +19,14 @@ export const ClassroomShow = () => {
     // const isNonVirtual = !record.isDerived;
 
     return (
-        <Show emptyWhileLoading>
+        <Show >
             <RecordContextProvider value={record}>
                 <TabbedShowLayout>
                     <SummaryTab label="summary" />
                     <StudentTab label="students" path="students" />
                     {/* {isNonVirtual && <ReportTab label="reports" path="reports" />}
                     {isNonVirtual && <SubjectTab label="subject" path="subject" />} */}
-                    <ReportTab label="reports" path="reports" />
+                    {/* <ReportTab label="reports" path="reports" /> */}
                 </TabbedShowLayout>
             </RecordContextProvider>
         </Show>

@@ -19,13 +19,14 @@ export interface Teacher extends TeacherShort {
 
 export interface AuthorizedTeacher {
     id: string;
-    email: string;
-    userName: string;
-    branch: string;
+    emailId: string;
+    name: string;
     created: boolean;
+    phone: string;
 }
 
 export interface AuthorizedTeacherIndex {
+    instituteId: string;
     teachers: {
         [email: string]: AuthorizedTeacher;
     };

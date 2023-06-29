@@ -5,7 +5,6 @@ import { DataProviderCustom } from 'types/DataProvider';
 import { AuthorizedTeacher } from 'types/models/teacher';
 import { paginateSingleDoc } from '../helpers/pagination';
 import { getFunctions } from 'firebase/functions';
-import { ReactAdminFirebaseAuthProvider } from 'react-admin-firebase/dist/providers/AuthProvider';
 
 /**
  * Don't call this directly
@@ -56,9 +55,9 @@ const AuthTeachersProvider: DataProviderCustom<AuthorizedTeacher> = {
     update: async (resource, params, providers) => {
         const { id, data } = params;
         const { firebaseCollection } = providers;
+        console.log('hi');
         const fieldPath = new FieldPath('teachers', id as string);
         await firebaseCollection(MAPPING.DATA).doc(MAPPING.AUTH_TEACHERS).update(fieldPath, data);
-
         return { data, status: 200 };
     },
 

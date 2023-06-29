@@ -1,10 +1,9 @@
 {
-    "apiKey": "AIzaSyBTnxS4MgbUZ8hnDOcF7mU_QBtLi80a14A",
-    "authDomain": "attendo-dev.firebaseapp.com",
-    "databaseURL": "https://attendo-dev-default-rtdb.asia-southeast1.firebasedatabase.app",
-    "projectId": "attendo-dev",
-    "storageBucket": "attendo-dev.appspot.com",
-    "messagingSenderId": "850074801100",
-    "appId": "1:850074801100:web:355c11e18ef73804d78369",
-    "measurementId": "G-K6XX3L6HF9"
-  }
+  "apiKey": "AIzaSyB6E_-q9rZKkIIsxs-TVQxPAbclPjw0Oco",
+  "authDomain": "attendo-for-schools.firebaseapp.com",
+  "projectId": "attendo-for-schools",
+  "storageBucket": "attendo-for-schools.appspot.com",
+  "messagingSenderId": "1061876942575",
+  "appId": "1:1061876942575:web:d8c3cc0f4b824c7ad8bd1a",
+  "measurementId": "G-04ZYBQ5Z4J"
+}

@@ -29,9 +29,9 @@ export const ImportButton = ({ csvExportHeaders, ...rest }: { csvExportHeaders: 
         } else {
             filteredData = data.filter((e) => {
                 const matchingRecord = record.find(({ id }) => id === e.id);
-                const { id, userName } = e;
+                const { id, name } = e;
                 const message = matchingRecord
-                  ? `Updated data of ${userName} teacher`
+                  ? `Updated data of ${name} teacher`
                   : `Updated ${data.length} Teachers`;
               
                 const shouldInclude = matchingRecord ? e : !record.some(({ id: recordId }) => recordId === id);

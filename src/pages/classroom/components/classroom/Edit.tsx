@@ -42,7 +42,7 @@ const EditClassroom = ({ teacherData, state }: { teacherData: TeacherShort[]; st
         const propRecord = props as Classroom;
 
         const common = {
-            id: propRecord.id,
+            id: propRecord.std+"-"+propRecord.division+"-"+propRecord.year,
             std: propRecord.std,
             division: propRecord.division,
             year: propRecord.year,
@@ -67,18 +67,6 @@ const EditClassroom = ({ teacherData, state }: { teacherData: TeacherShort[]; st
             data: finalData,
             previousData: record,
         });
-        update(
-            url,
-            { id: finalData.id, data: finalData },
-            {
-                onSuccess: () => {
-                    refresh();
-                    notify(`Edited ${finalData.id}`, { type: 'success' });
-                    state.setDialog(false);
-                },
-            }
-        );
-
         refresh();
         notify(`Edited ${finalData.id}`, { type: 'success' });
         state.setDialog(false);
@@ -98,9 +86,9 @@ const EditClassroom = ({ teacherData, state }: { teacherData: TeacherShort[]; st
                     </Toolbar>
                 }
             >
-                <TextInput source={SK.CLASSROOM('std')} required />
-                <TextInput source={SK.CLASSROOM('division')} required />
-                <TextInput source={SK.CLASSROOM('year')} required />
+                <TextInput source={SK.CLASSROOM('std')} required  disabled/>
+                <TextInput source={SK.CLASSROOM('division')} required disabled/>
+                <TextInput source={SK.CLASSROOM('year')} required disabled/>
             </SimpleForm>
         </Dialog>
     );
@@ -116,10 +104,10 @@ const ClassroomsEdit = ({ state }: { state: Props }) => {
         dataProvider.getList<AuthorizedTeacher>(MAPPING.AUTH_TEACHERS, defaultParams).then((e) => {
             const teacherData = e.data
                 .filter((e) => e.created)
-                .map(({ id, email, userName }) => ({
+                .map(({ id, emailId, name }) => ({
                     id,
-                    emailId: email,
-                    name: userName,
+                    emailId: emailId,
+                    name: name,
                 }));
             setTeachers(teacherData);
         });

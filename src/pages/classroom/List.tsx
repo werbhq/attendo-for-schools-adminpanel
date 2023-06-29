@@ -29,7 +29,7 @@ const ClassroomsList = () => {
                 <TextField source={SK.CLASSROOM('id')} />
                 <TextField source={SK.CLASSROOM('std')} />
                 <TextField source={SK.CLASSROOM('division')} />
-                <NumberField source={SK.CLASSROOM('year')} />
+                <TextField source={SK.CLASSROOM('year')} />
             </Datagrid>
         </List>
     );

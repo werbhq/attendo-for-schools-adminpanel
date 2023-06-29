@@ -1,10 +1,9 @@
 {
-    "apiKey": "AIzaSyAjJs7-_azfjBRNPMiSOH4O9l0FwvLyJAE",
-    "authDomain": "attendo-gcp.firebaseapp.com",
-    "databaseURL": "https://attendo-gcp-default-rtdb.firebaseio.com",
-    "projectId": "attendo-gcp",
-    "storageBucket": "attendo-gcp.appspot.com",
-    "messagingSenderId": "691816496645",
-    "appId": "1:691816496645:web:26537b8c7e3f38f502666c",
-    "measurementId": "G-L3QV7MWPJ2"
-}
+    "apiKey": "AIzaSyB6E_-q9rZKkIIsxs-TVQxPAbclPjw0Oco",
+    "authDomain": "attendo-for-schools.firebaseapp.com",
+    "projectId": "attendo-for-schools",
+    "storageBucket": "attendo-for-schools.appspot.com",
+    "messagingSenderId": "1061876942575",
+    "appId": "1:1061876942575:web:d8c3cc0f4b824c7ad8bd1a",
+    "measurementId": "G-04ZYBQ5Z4J"
+  }

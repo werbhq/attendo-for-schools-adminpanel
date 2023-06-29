@@ -64,11 +64,11 @@ const CreateClassroom = ({
 
     const transformSubmit = (props: any) => {
         const record = props as Classroom;
-        const classroomId = getClassroomId(record);
-
+        const classroomId = record.std + '-' + record.division + '-' + record.year;
+        console.log(classroomId);
         const common = {
             id: classroomId,
-            students: record.students,
+            students: record.students ?? {},
             std: record.std,
             division: record.division,
             year: record.year,
@@ -87,7 +87,7 @@ const CreateClassroom = ({
             ...common,
         };
         finalData = classroomData;
-
+        console.log(finalData);
         update(
             url,
             { id: finalData.id, data: finalData },
@@ -110,71 +110,14 @@ const CreateClassroom = ({
                 <TextInput source={SK.CLASSROOM('division')} required />
                 <TextInput source={SK.CLASSROOM('year')} required />
 
-                {/* {isDerived(data.name) && (
-                    <> */}
-                {/* <SelectInput
-                            source={SK.CLASSROOM('semester')}
-                            choices={getSemesters(data.scheme)}
-                            onChange={(e) => setData({ ...data, semester: e.target.value })}
-                            required
-                        />
-
-                        <SelectInput
-                            source={SK.CLASSROOM('subjectId')}
-                            choices={
-                                data.semester
-                                    ? getSubjects(data.scheme, data.branch, data.semester)
-                                    : []
-                            }
-                            disabled={
-                                getSubjects(data.scheme, data.branch, data.semester).length === 0
-                                    ? true
-                                    : false
-                            }
-                            onChange={(e) =>
-                                setGroupDependency((v) => ({ ...v, subjectId: e.target.value }))
-                            }
-                            required
-                        />
-
-                        <ReferenceArrayInput
-                            source={SK.CLASSROOM('parentClasses')}
-                            reference={MAPPING.CLASSROOMS}
-                            filter={{
-                                isDerived: false,
-                                branch: data.branch,
-                                batch: batchData.find((e) => e.id === data.batchId),
-                            }}
-                        >
-                            <AutocompleteArrayInput
-                                optionText="id"
-                                source={SK.CLASSROOM('id')}
-                                filterToQuery={(searchText) => ({ id: searchText })}
-                                onChange={(e) =>
-                                    setGroupDependency((v) => ({
-                                        ...v,
-                                        parentClasses: e,
-                                    }))
-                                }
-                                isRequired
-                            />
-                        </ReferenceArrayInput>
-
-                        <GroupLink
-                            subjectId={groupDependency.subjectId}
-                            parentClasses={groupDependency.parentClasses}
-                            data={data}
-                            currentClassIdAlias={CURRENT_CLASS_ID}
-                        /> */}
-
                 <ReferenceArrayInput
                     source={SK.CLASSROOM('teachers')}
                     reference={MAPPING.AUTH_TEACHERS}
                     filter={{ created: true }}
                 >
                     <AutocompleteArrayInput
-                        optionText={SK.AUTH_TEACHERS('userName')}
-                        source={SK.AUTH_TEACHERS('userName')}
+                        optionText={SK.AUTH_TEACHERS('name')}
+                        source={SK.AUTH_TEACHERS('name')}
                         filterToQuery={(searchText) => ({ userName: searchText })}
                     />
                 </ReferenceArrayInput>
@@ -196,10 +139,10 @@ const ClassroomsCreate = () => {
         dataProvider.getList<AuthorizedTeacher>(MAPPING.AUTH_TEACHERS, defaultParams).then((e) => {
             const teacherData = e.data
                 .filter((e) => e.created)
-                .map(({ id, email, userName }) => ({
+                .map(({ id, emailId, name }) => ({
                     id,
-                    emailId: email,
-                    name: userName,
+                    emailId: emailId,
+                    name: name,
                 }));
             setTeachers(teacherData);
         });

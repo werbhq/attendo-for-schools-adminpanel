@@ -1,5 +1,6 @@
-import { Classroom, 
-    // ClassroomVirtual 
+import {
+    Classroom,
+    // ClassroomVirtual
 } from '../types/models/classroom';
 import { StudentShort as Student } from '../types/models/student';
 import { v4 as uuidv4 } from 'uuid';

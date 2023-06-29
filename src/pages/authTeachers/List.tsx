@@ -17,6 +17,8 @@ import {
     FilterButton,
     CreateButton,
     BulkDeleteWithConfirmButton,
+    useRecordContext,
+    useListContext,
 } from 'react-admin';
 import AddIcon from '@mui/icons-material/Add';
 import QuickFilter from 'components/ui/QuickFilter';
@@ -24,7 +26,7 @@ import { AuthTeachersProviderExtended } from 'provider/custom/authorizedTeachers
 import { ImportButton } from './components/Button';
 import jsonExport from 'jsonexport/dist';
 import { MAPPING } from 'provider/mapping';
-import { AuthorizedTeacher } from 'types/models/teacher';
+import { AuthorizedTeacher, AuthorizedTeacherIndex } from 'types/models/teacher';
 import SK from 'pages/source-keys';
 import { authProviderLegacy } from 'provider/firebase';
 
@@ -68,7 +70,6 @@ const AuthorizedTeacherList = () => {
             downloadCSV(csv, `Teachers`);
         });
     };
-
     const TopToolBar = () => {
         return (
             <TopToolbar>
@@ -88,9 +89,10 @@ const AuthorizedTeacherList = () => {
             actions={<TopToolBar />}
         >
             <Datagrid rowClick="show" bulkActionButtons={<PostBulkActionButtons />}>
-                <EmailField source={SK.AUTH_TEACHERS('email')} />
-                <TextField source={SK.AUTH_TEACHERS('userName')} label="Name" />
+                <EmailField source={SK.AUTH_TEACHERS('emailId')} label="Email Id"/>
+                <TextField source={SK.AUTH_TEACHERS('name')} label="Name" />
                 <BooleanField source={SK.AUTH_TEACHERS('created')} looseValue sortable={false} />
+                <TextField source={SK.AUTH_TEACHERS('phone')} label="Phone Number" />
             </Datagrid>
         </List>
     );
