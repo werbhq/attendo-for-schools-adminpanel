@@ -30,6 +30,10 @@ const ClassroomsList = () => {
                 <TextField source={SK.CLASSROOM('std')} />
                 <TextField source={SK.CLASSROOM('division')} />
                 <TextField source={SK.CLASSROOM('year')} />
+                <FunctionField
+                    label="Students Count"
+                    render={(record: Classroom) => Object.values(record?.students).length}
+                />
             </Datagrid>
         </List>
     );

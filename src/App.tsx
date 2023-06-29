@@ -49,7 +49,7 @@ const App = () => {
         >
             <Resource {...AuthTeachers} />
             <Resource {...Classroom} />
-            <Resource {...Attendance} />
+            {/* <Resource {...Attendance} /> */}
         </Admin>
     );
 };

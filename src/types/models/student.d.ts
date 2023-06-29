@@ -7,6 +7,6 @@ export interface StudentShort {
     admNo: string;
     email?: string;
     classId?: string;
+    phoneNo?: string;
     aliases?: string[];
 }
-

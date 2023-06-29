@@ -76,32 +76,38 @@ const CreateClassroom = ({
        
 
         const record = props as Classroom;
-        const classroomId = record.std + '-' + record.division + '-' + record.year;
+        const classroomId = (record.std + '-' + record.division + '-' + record.year).toString();
         console.log(classroomId);
         const instituteId = await fetchPermission();
+        console.log(teacherData.reduce((key, teacher) => {
+            return {
+                ...key,
+                [teacher.id]: teacher,
+            };
+        }, {}) )
         const common = {
             id: classroomId,
             students: record.students ?? {},
             std: record.std,
             division: record.division,
-            year: record.year,
+            year: Number(record.year),
             teachers: teacherData.reduce((key, teacher) => {
                 return {
                     ...key,
                     [teacher.id]: teacher,
                 };
-            }, {}),
+            }, {})  ??{},
             instituteId: instituteId,
         };
 
         let finalData: Classroom;
-
+        
         // if (!isDerived(record.name)) {
         const classroomData: Classroom = {
             ...common,
         };
         finalData = classroomData;
-        console.log(finalData);
+        console.log(classroomData);
         // update(
         //     url,
         //     { id: finalData.id, data: finalData },
@@ -153,10 +159,11 @@ const ClassroomsCreate = () => {
         dataProvider.getList<AuthorizedTeacher>(MAPPING.AUTH_TEACHERS, defaultParams).then((e) => {
             const teacherData = e.data
                 .filter((e) => e.created)
-                .map(({ id, emailId, name }) => ({
+                .map(({ id, emailId, name,phone }) => ({
                     id,
                     emailId: emailId,
                     name: name,
+                    phone:phone
                 }));
             setTeachers(teacherData);
         });

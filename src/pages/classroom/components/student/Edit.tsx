@@ -12,6 +12,8 @@ import {
     SaveButton,
     required,
     email,
+    AutocompleteArrayInput,
+    ReferenceArrayInput,
 } from 'react-admin';
 import { MAPPING } from 'provider/mapping';
 import { DialogActions, DialogContent, DialogContentText, DialogTitle, Stack } from '@mui/material';
@@ -92,11 +94,11 @@ export default function EditStudent({
     const { record } = dialog;
     const student: any = record ?? {
         id: null,
-        name: null,
         rollNo: null,
-        regNo: null,
+        name: null,
+        admNo: null,
         email: null,
-        userName: null,
+        phoneNo: null,
     };
 
     const newStudents = students;
@@ -106,8 +108,11 @@ export default function EditStudent({
         const newRecord = e as Student;
         const index = students.findIndex((e) => e.id === newRecord.id);
         if (index !== -1) newStudents[index] = newRecord;
-        else newStudents.push({ ...newRecord,  id: newRecord.admNo  });
-
+        else
+            newStudents.push({
+                ...newRecord,
+                id: newRecord.admNo,
+            });
         await dataProvider.update<Student>(url, {
             id,
             data: newStudents,
@@ -170,6 +175,7 @@ export default function EditStudent({
                 />
                 <TextInput source={SK.STUDENT('name')} label="Name" sx={style} required />
                 <TextInput source={SK.STUDENT('email')} label="Email" sx={style} required />
+                <TextInput source={SK.STUDENT('phoneNo')} label="Phone No" sx={style} required />
                 {/* <TextInput source={SK.STUDENT('userName')} label="User Name" sx={style} /> */}
                 <Stack direction="row" spacing={3}>
                     <SaveButton label={dialog.add ? 'Add' : 'Save'} />

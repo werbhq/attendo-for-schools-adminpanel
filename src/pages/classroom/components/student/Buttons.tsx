@@ -173,56 +173,41 @@ export const ImportButton = ({
     csvExportHeaders: string[];
     setListData: React.Dispatch<React.SetStateAction<Student[]>>;
 }) => {
-    type ClassroomCustom = Omit<Classroom, 'parentClasses'> & { parentClasses: string[] };
-    type StudentCustom = Student & { classId: string };
-
     const importRef = useRef<HTMLInputElement>(null);
     const notify = useNotify();
+    const refresh = useRefresh();
     const dataProvider = useDataProvider();
-    const record: ClassroomCustom = useRecordContext();
+    const record = useRecordContext();
 
-    const fileLoadHandler = async (data: StudentCustom[]) => {
+    const fileLoadHandler = async (data: Student[]) => {
         const invalidHeader = data.some((e) => {
             const keys = Object.keys(e).sort();
+            console.log(keys);
+            console.log(csvExportHeaders);
             const containsAllHeaders = csvExportHeaders.every((header) => keys.includes(header));
             return !containsAllHeaders;
         });
-
+        console.log(invalidHeader);
         if (invalidHeader) {
             const message = `Headers are invalid. Proper headers are ${csvExportHeaders.join(',')}`;
             return notify(message, { type: 'error' });
         }
+        console.log(record);
 
-        // if (record.isDerived) {
-        //     const parentClasses = record.parentClasses;
-        //     const invalidClassId = data.some((e) => !parentClasses.includes(e.classId));
+        data.forEach((item) => {
+            item.admNo = item.admNo.toString().toUpperCase();
+            item.id = item.admNo;
+            item.phoneNo = item.phoneNo?.toString();
+        });
 
-        //     if (invalidClassId) {
-        //         const message = `ClassIds don't match the Parent Classes Proper classIds are ${parentClasses.join(
-        //             ','
-        //         )}`;
-        //         return notify(message, { type: 'error' });
-        //     }
-
-        //     data = data.filter((e) => parentClasses.includes(e.classId));
-        // } else {
-            const classId = record.id;
-            let containedClassId;
-            if (data.some((e) => e.hasOwnProperty('classId'))) {
-                containedClassId = data.filter((e) => e.classId === classId);
-            } else {
-                containedClassId = data;
-            }
-            data = containedClassId;
-        // }
-
+        console.log(data);
         await dataProvider.update<Student>(MAPPING.STUDENTS, {
             id: record.id,
             data,
             previousData: Object.values(record.students),
             meta: { record },
         });
-
+        refresh();
         notify(`Updated ${data.length} Students of ${record.id}`, {
             type: 'success',
         });

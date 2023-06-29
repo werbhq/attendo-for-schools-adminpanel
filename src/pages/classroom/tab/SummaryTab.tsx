@@ -40,7 +40,7 @@ const SummaryTab = ({ label, ...rest }: { label: string }) => {
                     label="Students Count"
                     render={(record: Classroom) => Object.values(record?.students).length}
                 />
-                <ReferenceArrayField
+                <ReferenceField
                     label="Teachers"
                     source={SK.AUTH_TEACHERS('id')}
                     reference={MAPPING.AUTH_TEACHERS}
@@ -48,7 +48,7 @@ const SummaryTab = ({ label, ...rest }: { label: string }) => {
                     sx={{ margin: '10px 0px' }}
                 >
                     <TeacherField></TeacherField>
-                </ReferenceArrayField>
+                </ReferenceField>
             </SimpleShowLayout>
 
             <div style={{ margin: '20px 0px' }}>

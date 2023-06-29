@@ -10,6 +10,8 @@ import {
     DeleteButton,
     TextInput,
     useUpdate,
+    AutocompleteArrayInput,
+    ReferenceArrayInput,
 } from 'react-admin';
 import { MAPPING } from 'provider/mapping';
 import { authProviderLegacy, defaultParams } from 'provider/firebase';
@@ -100,6 +102,17 @@ const EditClassroom = ({ teacherData, state }: { teacherData: TeacherShort[]; st
                 <TextInput source={SK.CLASSROOM('std')} required  disabled/>
                 <TextInput source={SK.CLASSROOM('division')} required disabled/>
                 <TextInput source={SK.CLASSROOM('year')} required disabled/>
+                <ReferenceArrayInput
+                    source={SK.CLASSROOM('teachers')}
+                    reference={MAPPING.AUTH_TEACHERS}
+                    filter={{ created: true }}
+                >
+                    <AutocompleteArrayInput
+                        optionText={SK.AUTH_TEACHERS('name')}
+                        source={SK.AUTH_TEACHERS('name')}
+                        filterToQuery={(searchText) => ({ name: searchText })}
+                    />
+                </ReferenceArrayInput>
             </SimpleForm>
         </Dialog>
     );

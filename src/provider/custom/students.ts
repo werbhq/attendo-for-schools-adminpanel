@@ -19,10 +19,11 @@ const StudentsProvider: DataProviderCustom<StudentShort[]> = {
         const { firebaseCollection } = providers;
 
         const studentMap: Classroom['students'] = {};
+        console.log(studentMap);
         data.forEach((e) => {
             studentMap[e?.id as string] = e as StudentShort;
         });
-
+        
         await firebaseCollection(MAPPING.CLASSROOMS)
             .doc(id as string)
             .update({ students: studentMap, 'meta.lastUpdated': FieldValue.serverTimestamp() });

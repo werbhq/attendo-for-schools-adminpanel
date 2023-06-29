@@ -29,7 +29,7 @@ const ClassroomProvider: DataProviderCustom<Classroom> = {
     create: async (resource, params, providers) => {
         const { data } = params;
         const { dataProviderCustom, firebaseCollection } = providers;
-
+        console.log(data);
         const { exists: documentExists } = await firebaseCollection(MAPPING.CLASSROOMS)
             .doc(data.id)
             .get();
