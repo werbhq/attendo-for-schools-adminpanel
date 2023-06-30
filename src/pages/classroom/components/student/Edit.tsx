@@ -88,7 +88,7 @@ export default function EditStudent({
     const refresh = useRefresh();
     const dataProvider = useDataProvider();
     const { id, students: studentIndex } = useRecordContext<Classroom>();
-    const students = Object.values(studentIndex);
+    let students = Object.values(studentIndex);
 
     const { setDialog, dialog } = state;
     const { record } = dialog;

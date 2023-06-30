@@ -10,7 +10,7 @@ import {
 } from 'react-admin';
 import { AuthTeachersProviderExtended } from 'provider/custom/authorizedTeachers';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AuthorizedTeacher } from 'types/models/teacher';
 import SK from 'pages/source-keys';
 import { authProviderLegacy } from 'provider/firebase';
@@ -41,7 +41,6 @@ const AuthorizedTeacherShow = () => {
 
     // useEffect(() => {
     //     setLoading(true);
-    //     fetchData();
     //     setLoading(false);
     //     // eslint-disable-next-line react-hooks/exhaustive-deps
     // }, []);
@@ -57,7 +56,7 @@ const AuthorizedTeacherShow = () => {
         } catch (e: any) {
             notify(e.message, { type: 'error' });
         }
-        setLoading(true);
+        setLoading(false);
         refresh();
     };
 

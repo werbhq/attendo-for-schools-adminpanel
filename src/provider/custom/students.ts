@@ -19,8 +19,9 @@ const StudentsProvider: DataProviderCustom<StudentShort[]> = {
         const { firebaseCollection } = providers;
 
         const studentMap: Classroom['students'] = {};
-        console.log(studentMap);
         data.forEach((e) => {
+            console.log(e);
+
             studentMap[e?.id as string] = e as StudentShort;
         });
         

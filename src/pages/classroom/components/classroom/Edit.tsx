@@ -27,7 +27,7 @@ type Props = {
 };
 
 const EditClassroom = ({ teacherData, state }: { teacherData: TeacherShort[]; state: Props }) => {
-    const record: Classroom & { parentClasses: string[] } = useRecordContext();
+    const record: Classroom = useRecordContext();
     const dataProvider = useDataProvider();
     const [update] = useUpdate();
     const refresh = useRefresh();
@@ -54,7 +54,7 @@ const EditClassroom = ({ teacherData, state }: { teacherData: TeacherShort[]; st
         const instituteId = await fetchPermission();
 
         const common = {
-            id: propRecord.std+"-"+propRecord.division+"-"+propRecord.year,
+            id: propRecord.std + '-' + propRecord.division + '-' + propRecord.year,
             std: propRecord.std,
             division: propRecord.division,
             year: propRecord.year,
@@ -74,7 +74,7 @@ const EditClassroom = ({ teacherData, state }: { teacherData: TeacherShort[]; st
             ...common,
         };
         finalData = classroomData;
-
+        console.log(finalData.teachers);
         await dataProvider.update<Classroom>(MAPPING.CLASSROOMS, {
             id: finalData.id,
             data: finalData,
@@ -99,9 +99,9 @@ const EditClassroom = ({ teacherData, state }: { teacherData: TeacherShort[]; st
                     </Toolbar>
                 }
             >
-                <TextInput source={SK.CLASSROOM('std')} required  disabled/>
-                <TextInput source={SK.CLASSROOM('division')} required disabled/>
-                <TextInput source={SK.CLASSROOM('year')} required disabled/>
+                <TextInput source={SK.CLASSROOM('std')} required disabled />
+                <TextInput source={SK.CLASSROOM('division')} required disabled />
+                <TextInput source={SK.CLASSROOM('year')} required disabled />
                 <ReferenceArrayInput
                     source={SK.CLASSROOM('teachers')}
                     reference={MAPPING.AUTH_TEACHERS}

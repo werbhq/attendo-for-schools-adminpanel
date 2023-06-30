@@ -31,7 +31,7 @@ export const ImportButton = ({ csvExportHeaders, ...rest }: { csvExportHeaders: 
         } else {
             const dataRemoveNull = data.filter((e) => e.emailId && e.name && e.phone);
 
-            let matchingRecord: boolean;
+            let matchingRecord: any;
             const updatedTeachersCount = dataRemoveNull.reduce((count, e) => {
                 matchingRecord = record.find(({ id }) => id === e.emailId);
                 console.log(matchingRecord);

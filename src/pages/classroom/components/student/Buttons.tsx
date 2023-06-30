@@ -182,8 +182,6 @@ export const ImportButton = ({
     const fileLoadHandler = async (data: Student[]) => {
         const invalidHeader = data.some((e) => {
             const keys = Object.keys(e).sort();
-            console.log(keys);
-            console.log(csvExportHeaders);
             const containsAllHeaders = csvExportHeaders.every((header) => keys.includes(header));
             return !containsAllHeaders;
         });
@@ -191,27 +189,53 @@ export const ImportButton = ({
         if (invalidHeader) {
             const message = `Headers are invalid. Proper headers are ${csvExportHeaders.join(',')}`;
             return notify(message, { type: 'error' });
+        } else {
+            console.log(record);
+
+            const dataRemoveNull = data.filter((e) => e.admnNo && e.name && e.rollNo);
+            console.log(dataRemoveNull);
+            dataRemoveNull.forEach((item) => {
+                item.admnNo = item.admnNo.toString().toUpperCase();
+                item.id = item.admnNo;
+                item.phoneNo = item.phoneNo ? item.phoneNo.toString() : '';
+            });
+
+            console.log(data);
+            const studentsList: Student[] = Object.values(record.students);
+            let matchingRecord: Student | undefined;
+            let message;
+            const updatedTeachersCount = dataRemoveNull.reduce((count, e) => {
+                matchingRecord = studentsList.find((f) => f.id === e.admnNo);
+                console.log(matchingRecord);
+                return count + (matchingRecord ? 0 : 1);
+            }, 0);
+            console.log(updatedTeachersCount);
+            const filteredData = dataRemoveNull.filter((e) => {
+                const { id } = e;
+
+                message = matchingRecord
+                    ? 'No updation'
+                    : `Updated ${updatedTeachersCount} Teachers`;
+                const shouldInclude = !matchingRecord
+                    ? e
+                    : !studentsList.some(({ id: recordId }) => recordId === id);
+                console.log(!studentsList.some(({ id: recordId }) => recordId === id));
+                refresh();
+                return shouldInclude;
+            });
+            console.log(filteredData);
+            await dataProvider.update<Student>(MAPPING.STUDENTS, {
+                id: record.id,
+                data: filteredData,
+                previousData: Object.values(record.students),
+                meta: { record },
+            });
+            refresh();
+            notify(message, {
+                type: 'success',
+            });
+            setListData(data);
         }
-        console.log(record);
-
-        data.forEach((item) => {
-            item.admnNo = item.admnNo.toString().toUpperCase();
-            item.id = item.admnNo;
-            item.phoneNo = item.phoneNo ? item.phoneNo.toString() : '';
-        });
-
-        console.log(data);
-        await dataProvider.update<Student>(MAPPING.STUDENTS, {
-            id: record.id,
-            data,
-            previousData: Object.values(record.students),
-            meta: { record },
-        });
-        refresh();
-        notify(`Updated ${data.length} Students of ${record.id}`, {
-            type: 'success',
-        });
-        setListData(data);
     };
 
     return (
