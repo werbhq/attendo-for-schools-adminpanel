@@ -96,7 +96,7 @@ export default function EditStudent({
         id: null,
         rollNo: null,
         name: null,
-        admNo: null,
+        admnNo: null,
         email: null,
         phoneNo: null,
     };
@@ -111,7 +111,7 @@ export default function EditStudent({
         else
             newStudents.push({
                 ...newRecord,
-                id: newRecord.admNo,
+                id: newRecord.admnNo,
             });
         await dataProvider.update<Student>(url, {
             id,
@@ -167,7 +167,7 @@ export default function EditStudent({
                 <TextInput
                     // source={SK.STUDENT('regNo')}
                     // label="Registration Number"
-                    source={SK.STUDENT('admNo')}
+                    source={SK.STUDENT('admnNo')}
                     label="Admission Number"
                     sx={style}
                     required

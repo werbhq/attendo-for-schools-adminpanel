@@ -38,7 +38,7 @@ const SummaryTab = ({ label, ...rest }: { label: string }) => {
                 <TextField source={SK.CLASSROOM('year')} />
                 <FunctionField
                     label="Students Count"
-                    render={(record: Classroom) => Object.values(record?.students).length}
+                    render={(record: Classroom) => record.students?Object.values(record.students).length:0}
                 />
                 <ReferenceField
                     label="Teachers"

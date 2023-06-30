@@ -55,10 +55,10 @@ export const ImportButton = ({ csvExportHeaders, ...rest }: { csvExportHeaders: 
                 return shouldInclude;
             });
         }
-        // filteredData.forEach((e) => {
-        //     e.created = false;
-        //     update(resource, { id: e.id, data: e });
-        // });
+        filteredData.forEach((e) => {
+            e.created = false;
+            update(resource, { id: e.id, data: e });
+        });
     };
 
     return (

@@ -49,7 +49,7 @@ const StudentTab = ({ label, path, ...props }: { label: string; path: string; pr
     // const csvExportHeaders = record.isDerived
     //     ? ['classId', 'id', 'email', 'regNo', 'rollNo', 'name', 'userName']
     //     : ['id', 'email', 'regNo', 'rollNo', 'name', 'userName'];
-    const csvExportHeaders = ['id', 'email', 'rollNo', 'name', 'admNo', 'phoneNo'];
+    const csvExportHeaders = ['id', 'email', 'rollNo', 'name', 'admnNo', 'phoneNo'];
     // const [, { select }] = useRecordSelection(resource);
     // const unselectAll = useUnselectAll(resource);
 
@@ -153,7 +153,7 @@ const StudentTab = ({ label, path, ...props }: { label: string; path: string; pr
                     }
                 >
                     <NumberField source={SK.STUDENT('rollNo')} />
-                    <TextField source={SK.STUDENT('admNo')} />
+                    <TextField source={SK.STUDENT('admnNo')} />
                     <TextField source={SK.STUDENT('name')} />
                     <EmailField source={SK.STUDENT('email')} emptyText="-" />
                     <TextField source={SK.STUDENT('phoneNo')} emptyText="-" />

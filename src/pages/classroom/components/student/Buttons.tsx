@@ -195,9 +195,9 @@ export const ImportButton = ({
         console.log(record);
 
         data.forEach((item) => {
-            item.admNo = item.admNo.toString().toUpperCase();
-            item.id = item.admNo;
-            item.phoneNo = item.phoneNo?.toString();
+            item.admnNo = item.admnNo.toString().toUpperCase();
+            item.id = item.admnNo;
+            item.phoneNo = item.phoneNo ? item.phoneNo.toString() : '';
         });
 
         console.log(data);
