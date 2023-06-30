@@ -52,9 +52,10 @@ const AuthorizedTeacherList = () => {
                     onClick={async () => {
                         const permission = await authProviderLegacy.getPermissions({});
                         console.log(data.selectedIds);
-                        AuthTeachersProviderExtended.createEmails(
+                        console.log(permission['institute']);
+                        AuthTeachersProviderExtended.createAccounts(
                             data.selectedIds as string[],
-                            permission
+                            permission['institute']
                         ).then((e) => {
                             notify(e.message, { type: e.success ? 'success' : 'error' });
                             refresh();

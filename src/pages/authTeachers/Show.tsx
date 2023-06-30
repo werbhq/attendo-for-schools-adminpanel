@@ -49,9 +49,9 @@ const AuthorizedTeacherShow = () => {
         setLoading(true);
         try {
             const permission = await authProviderLegacy.getPermissions({});
-            const { message, success } = await AuthTeachersProviderExtended.createEmails(
+            const { message, success } = await AuthTeachersProviderExtended.createAccounts(
                 [record.id],
-                permission
+                permission['institute']
             );
             notify(message, { type: success ? 'success' : 'error' });
         } catch (e: any) {
@@ -68,7 +68,7 @@ const AuthorizedTeacherShow = () => {
             <SimpleShowLayout>
                 <TextField source={SK.AUTH_TEACHERS('emailId')} />
                 <TextField source={SK.AUTH_TEACHERS('name')} label="Name" />
-                <TextField source={SK.AUTH_TEACHERS('phone')} label="Phone Number"/>
+                <TextField source={SK.AUTH_TEACHERS('phone')} label="Phone Number" />
                 <BooleanField source={SK.AUTH_TEACHERS('created')} looseValue />
                 <WithRecord
                     render={(record: AuthorizedTeacher) =>
