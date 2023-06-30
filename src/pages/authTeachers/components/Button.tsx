@@ -19,6 +19,7 @@ export const ImportButton = ({ csvExportHeaders, ...rest }: { csvExportHeaders: 
         let filteredData = [];
         const record = await dataProvider.getList(resource, defaultParams).then((e) => e.data); //whole data will be read only while importing
         console.log(record);
+        console.log(data);
         const invalidHeader = data.some((e) => {
             const keys = Object.keys(e).sort();
             const containsAllHeaders = csvExportHeaders.every((header) => keys.includes(header));
@@ -28,14 +29,22 @@ export const ImportButton = ({ csvExportHeaders, ...rest }: { csvExportHeaders: 
             const message = `Headers are invalid. Proper headers are ${csvExportHeaders.join(',')}`;
             return notify(message, { type: 'error' });
         } else {
-            filteredData = data.filter((e) => {
-                const matchingRecord = record.find(({ id }) => id === e.id);
-                const { id } = e;
-                const message = matchingRecord
-                    ? `No updation`
-                    : `Updated ${data.length} Teachers`;
+            const dataRemoveNull = data.filter((e) => e.emailId && e.name && e.phone);
 
-                const shouldInclude = matchingRecord
+            let matchingRecord: boolean;
+            const updatedTeachersCount = dataRemoveNull.reduce((count, e) => {
+                matchingRecord = record.find(({ id }) => id === e.emailId);
+                console.log(matchingRecord);
+                return count + (matchingRecord ? 0 : 1);
+            }, 0);
+            filteredData = dataRemoveNull.filter((e) => {
+                e.id = e.emailId;
+                const { id } = e;
+
+                const message = matchingRecord
+                    ? 'No updation'
+                    : `Updated ${updatedTeachersCount} Teachers`;
+                const shouldInclude = !matchingRecord
                     ? e
                     : !record.some(({ id: recordId }) => recordId === id);
                 refresh();
@@ -46,14 +55,10 @@ export const ImportButton = ({ csvExportHeaders, ...rest }: { csvExportHeaders: 
                 return shouldInclude;
             });
         }
-        filteredData.forEach((e) =>
-            
-            {
-                e.created = false;
-                e.id = e.emailId;
-                update(resource, { id: e.id, data: e });
-            }
-        );
+        // filteredData.forEach((e) => {
+        //     e.created = false;
+        //     update(resource, { id: e.id, data: e });
+        // });
     };
 
     return (

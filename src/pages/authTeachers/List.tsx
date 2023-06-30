@@ -31,15 +31,18 @@ import SK from 'pages/source-keys';
 import { authProviderLegacy } from 'provider/firebase';
 
 const filters = [
-    <SearchInput source="id" alwaysOn resettable />,
-    <TextInput source="branch" resettable />,
-    <QuickFilter source="created" label="Account created" defaultValue={true} />,
+    <SearchInput source={SK.AUTH_TEACHERS('id')} alwaysOn resettable />,
+    <QuickFilter
+        source={SK.AUTH_TEACHERS('created')}
+        label="Account created"
+        defaultValue={true}
+    />,
 ];
 
 const AuthorizedTeacherList = () => {
     const notify = useNotify();
     const refresh = useRefresh();
-    const csvExportHeaders = ['emailId', 'name', 'phone'];
+    const csvHeaders = ['name', 'emailId', 'phone'];
     const PostBulkActionButtons = (data: BulkActionProps) => {
         return (
             <>
@@ -66,6 +69,8 @@ const AuthorizedTeacherList = () => {
     const teachersExporter = (data: AuthorizedTeacher[]) => {
         const dataForExport = data;
         const dataForExportWithoutCreated = dataForExport.map(({ created, ...rest }) => rest); // created parameter wont be presented
+        csvHeaders.unshift('id');
+        const csvExportHeaders = csvHeaders;
         jsonExport(dataForExportWithoutCreated, { headers: csvExportHeaders }, (err, csv) => {
             downloadCSV(csv, `Teachers`);
         });
@@ -76,7 +81,7 @@ const AuthorizedTeacherList = () => {
                 <CreateButton />
                 <FilterButton />
                 <ExportButton />
-                <ImportButton csvExportHeaders={csvExportHeaders} />
+                <ImportButton csvExportHeaders={csvHeaders} />
             </TopToolbar>
         );
     };
