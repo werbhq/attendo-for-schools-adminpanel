@@ -7,8 +7,9 @@ import {
     ReferenceArrayField,
     ChipField,
     SingleFieldList,
-    useRecordContext,
+    useShowController,
     ReferenceField,
+    useDataProvider,
     // ArrayField,
     // Datagrid,
     // SelectField,
@@ -21,14 +22,31 @@ import { MAPPING } from 'provider/mapping';
 import { Classroom } from 'types/models/classroom';
 import SK from 'pages/source-keys';
 import EmptySingleDisplay from 'components/ui/EmptySingleField';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import EditClassroom from '../components/classroom/Edit';
 import { ClassroomFrontend } from 'types/frontend/classroom';
 import TeacherField from '../components/classroom/CustomTeacherField';
+import { AuthorizedTeacher, TeacherShort } from 'types/models/teacher';
 
 const SummaryTab = ({ label, ...rest }: { label: string }) => {
+    const { record } = useShowController();
     const [classroomDialog, setClassroomDialog] = useState<boolean>(false);
+    const [loading, setLoading] = useState(false);
+    const [teachersData, setTeachersData] = useState<TeacherShort[]>();
+    const dataProvider = useDataProvider();
 
+    const fetchData = () => {
+        console.log(Object.values(record.teachers));
+        setTeachersData(Object.values(record.teachers));
+        // console.log(Object.values(record.teachers));
+
+    };
+    useEffect(() => {
+        setLoading(true);
+        fetchData();
+        setLoading(false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     return (
         <Tab {...rest} label={label}>
             <SimpleShowLayout>
@@ -38,17 +56,32 @@ const SummaryTab = ({ label, ...rest }: { label: string }) => {
                 <TextField source={SK.CLASSROOM('year')} />
                 <FunctionField
                     label="Students Count"
-                    render={(record: Classroom) => record.students?Object.values(record.students).length:0}
+                    render={(record: Classroom) => Object.values(record.students ?? {}).length}
                 />
-                <ReferenceField
-                    label="Teachers"
-                    source={SK.AUTH_TEACHERS('id')}
-                    reference={MAPPING.AUTH_TEACHERS}
-                    resource={MAPPING.AUTH_TEACHERS}
-                    sx={{ margin: '10px 0px' }}
-                >
-                    <TeacherField></TeacherField>
-                </ReferenceField>
+                <FunctionField
+                        label="Teachers"
+                        emptyText="-"
+                        render={() => (
+                            <ul style={{ padding: 0, margin: 0 }}>
+                                {teachersData?.length !== 0 ? (
+                                    teachersData?.map((e:TeacherShort) => (
+                                            <ReferenceField
+                                                key={e.id}
+                                                record={e}
+                                                reference={MAPPING.AUTH_TEACHERS}
+                                                source="id"
+                                                link="show"
+                                                label={e.id}
+                                            >
+                                                <ChipField source="name" />
+                                            </ReferenceField>
+                                        ))
+                                ) : (
+                                    <> - </>
+                                )}
+                            </ul>
+                        )}
+                    />
             </SimpleShowLayout>
 
             <div style={{ margin: '20px 0px' }}>

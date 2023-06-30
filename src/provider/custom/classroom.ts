@@ -14,14 +14,16 @@ const ClassroomProvider: DataProviderCustom<Classroom> = {
         const { id, data } = params;
         const { dataProviderCustom, firebaseCollection } = providers;
 
-        delete data.teachers;
-
+        // delete data.teachers;
+        console.log('hi');
         const ref = firebaseCollection(MAPPING.CLASSROOMS);
         const promises = [
             ref.doc(data.id).update({ ...data, 'meta.lastUpdated': FieldValue.serverTimestamp() }),
         ];
 
-        await Promise.all(promises);
+        const a = await Promise.all(promises);
+        console.log(a);
+        console.log({ ...data, id });
 
         return { data: { ...data, id }, status: 200 };
     },
