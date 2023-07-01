@@ -23,9 +23,9 @@ export const ImportButton = ({ csvExportHeaders, ...rest }: { csvExportHeaders: 
             if (
                 typeof e.emailId !== 'string' ||
                 typeof e.name !== 'string' ||
-                typeof e.phone !== 'string' ||
-                typeof e.phone !== 'number' ||
-                typeof e.phone !== 'undefined'
+                (typeof e.phone !== 'string' &&
+                    typeof e.phone !== 'number' &&
+                    typeof e.phone !== 'undefined')
             ) {
                 return false;
             }

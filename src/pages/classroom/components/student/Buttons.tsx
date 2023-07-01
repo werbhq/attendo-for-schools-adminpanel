@@ -188,8 +188,7 @@ export const ImportButton = ({
             if (
                 typeof e.admnNo !== 'string' ||
                 typeof e.name !== 'string' ||
-                typeof e.rollNo !== 'string' ||
-                typeof e.rollNo !== 'number'
+                (typeof e.rollNo !== 'string' && typeof e.rollNo !== 'number')
             ) {
                 return false;
             }
