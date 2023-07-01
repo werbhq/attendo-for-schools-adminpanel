@@ -10,14 +10,10 @@ import {
     useRefresh,
     useNotify,
     SaveButton,
-    required,
-    email,
-    AutocompleteArrayInput,
-    ReferenceArrayInput,
 } from 'react-admin';
 import { MAPPING } from 'provider/mapping';
 import { DialogActions, DialogContent, DialogContentText, DialogTitle, Stack } from '@mui/material';
-import { autoCapitalize, validateName } from 'Utils/helpers';
+import { autoCapitalize } from 'Utils/helpers';
 import { useState } from 'react';
 import { StudentShort as Student } from 'types/models/student';
 import { Classroom } from 'types/models/classroom';

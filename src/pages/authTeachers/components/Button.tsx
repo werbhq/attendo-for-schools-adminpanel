@@ -15,6 +15,7 @@ export const ImportButton = ({ csvExportHeaders, ...rest }: { csvExportHeaders: 
     const refresh = useRefresh();
     const dataProvider = useDataProvider();
     const [update] = useUpdate();
+
     const fileLoadHandler = async (data: AuthorizedTeacher[]) => {
         let filteredData = [];
         const record = await dataProvider.getList(resource, defaultParams).then((e) => e.data); //whole data will be read only while importing

@@ -64,7 +64,7 @@ const ReportsProvider: DataProviderCustom<Report> = {
         );
 
         [...normalAttendances, ...virtualAttendances].forEach(
-            ({  attendances: e, classroom: attendanceClassroom }) => {
+            ({ attendances: e, classroom: attendanceClassroom }) => {
                 const attendances = Object.values(e).filter((e) => !developers[e.teacherId]);
                 const totalAttendance: number = attendances.length;
 
@@ -76,15 +76,20 @@ const ReportsProvider: DataProviderCustom<Report> = {
 
                 // Initializing percentage values
                 students.forEach((e, k) => {
-                    if (students.get(k)?.attendance[classroom.id] && !currentClassroom?.students[k]) { //check
+                    if (
+                        students.get(k)?.attendance[classroom.id] &&
+                        !currentClassroom?.students[k]
+                    ) {
+                        //check
                         return;
                     }
                     const val = {
                         ...e,
                         attendance: {
                             ...e.attendance,
-                            [classroom.id]: {//check
-                                name: classroom.id.toUpperCase(),//check
+                            [classroom.id]: {
+                                //check
+                                name: classroom.id.toUpperCase(), //check
                                 percentage: currentClassroom?.students[k] ? 100 : -1,
                                 absent: 0,
                                 isVirtualClass: false,
@@ -99,7 +104,7 @@ const ReportsProvider: DataProviderCustom<Report> = {
                         const student = students.get(absentee);
                         if (!student) return;
 
-                        const absent = student.attendance[classroom.id].absent + 1;//checl
+                        const absent = student.attendance[classroom.id].absent + 1; //checl
                         const percentage = ((totalAttendance - absent) / totalAttendance) * 100;
 
                         students.set(absentee, {
@@ -107,7 +112,7 @@ const ReportsProvider: DataProviderCustom<Report> = {
                             attendance: {
                                 ...student.attendance,
                                 [classroom.id]: {
-                                    ...student.attendance[classroom.id],//check
+                                    ...student.attendance[classroom.id], //check
                                     absent,
                                     percentage,
                                 },
@@ -121,13 +126,10 @@ const ReportsProvider: DataProviderCustom<Report> = {
         const attendances: Report[] = Array.from(students.values())
             .map((e) => ({
                 ...e,
-                attendance: Object.values(e.attendance).map(
-                    ({ name, percentage }) => ({
-                        name,
-                        percentage,
-
-                    })
-                ),
+                attendance: Object.values(e.attendance).map(({ name, percentage }) => ({
+                    name,
+                    percentage,
+                })),
             }))
             .sort(sortByRoll);
 

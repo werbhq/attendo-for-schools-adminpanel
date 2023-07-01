@@ -2,7 +2,6 @@ import { Admin, defaultTheme, Resource } from 'react-admin';
 import red from '@mui/material/colors/red';
 import Classroom from './pages/classroom/Index';
 import DashBoard from './pages/dashboard/Dashboard';
-import Attendance from './pages/attendances/Index';
 import { RaDatagrid, RaList } from 'components/ui/style';
 import AuthTeachers from './pages/authTeachers';
 import { getCustomAuthProvider, isProd } from './provider/firebase';
@@ -49,7 +48,7 @@ const App = () => {
         >
             <Resource {...AuthTeachers} />
             <Resource {...Classroom} />
-            {/* <Resource {...Attendance} /> */}
+            {/* TODO: ADD ATTENDANCE RESOURCE*/}
         </Admin>
     );
 };

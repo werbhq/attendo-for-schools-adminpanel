@@ -3,10 +3,8 @@ import {
     TextField,
     List,
     SearchInput,
-    TextInput,
     EmailField,
     BooleanField,
-    BulkUpdateButton,
     useNotify,
     BulkActionProps,
     useRefresh,
@@ -17,8 +15,6 @@ import {
     FilterButton,
     CreateButton,
     BulkDeleteWithConfirmButton,
-    useRecordContext,
-    useListContext,
 } from 'react-admin';
 import AddIcon from '@mui/icons-material/Add';
 import QuickFilter from 'components/ui/QuickFilter';
@@ -26,7 +22,7 @@ import { AuthTeachersProviderExtended } from 'provider/custom/authorizedTeachers
 import { ImportButton } from './components/Button';
 import jsonExport from 'jsonexport/dist';
 import { MAPPING } from 'provider/mapping';
-import { AuthorizedTeacher, AuthorizedTeacherIndex } from 'types/models/teacher';
+import { AuthorizedTeacher } from 'types/models/teacher';
 import SK from 'pages/source-keys';
 import { authProviderLegacy } from 'provider/firebase';
 
@@ -76,6 +72,7 @@ const AuthorizedTeacherList = () => {
             downloadCSV(csv, `Teachers`);
         });
     };
+
     const TopToolBar = () => {
         return (
             <TopToolbar>

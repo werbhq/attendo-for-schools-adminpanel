@@ -1,5 +1,4 @@
 import icon from '@mui/icons-material/LocalPolice';
-
 import { MAPPING } from 'provider/mapping';
 import AuthorizedTeacherList from './List';
 import AuthorizedTeacherShow from './Show';

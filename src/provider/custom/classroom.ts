@@ -12,26 +12,19 @@ const ClassroomProvider: DataProviderCustom<Classroom> = {
 
     update: async (resource, params, providers) => {
         const { id, data } = params;
-        const { dataProviderCustom, firebaseCollection } = providers;
+        const { firebaseCollection } = providers;
 
-        // delete data.teachers;
-        console.log('hi');
         const ref = firebaseCollection(MAPPING.CLASSROOMS);
-        const promises = [
-            ref.doc(data.id).update({ ...data, 'meta.lastUpdated': FieldValue.serverTimestamp() }),
-        ];
-
-        const a = await Promise.all(promises);
-        console.log(a);
-        console.log({ ...data, id });
+        await ref
+            .doc(data.id)
+            .update({ ...data, 'meta.lastUpdated': FieldValue.serverTimestamp() });
 
         return { data: { ...data, id }, status: 200 };
     },
 
     create: async (resource, params, providers) => {
         const { data } = params;
-        const { dataProviderCustom, firebaseCollection } = providers;
-        console.log(data);
+        const { firebaseCollection } = providers;
         const { exists: documentExists } = await firebaseCollection(MAPPING.CLASSROOMS)
             .doc(data.id)
             .get();

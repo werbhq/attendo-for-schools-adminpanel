@@ -7,7 +7,7 @@ const AttendanceList = () => {
         <List exporter={false}>
             <Datagrid rowClick="show">
                 <ReferenceField
-                    source={SK.ATTENDANCE("classroom.id")}
+                    source={SK.ATTENDANCE('classroom.id')}
                     label="Classroom Id"
                     reference={MAPPING.CLASSROOMS}
                     link="show"
@@ -16,7 +16,7 @@ const AttendanceList = () => {
                 </ReferenceField>
 
                 {/* need to check */}
-                <TextField source={SK.ATTENDANCE("attendances")} label="Date" />
+                <TextField source={SK.ATTENDANCE('attendances')} label="Date" />
                 <TextField source="semester" />
                 <TextField source="attendance.hour" label="Hour" />
                 <ReferenceField

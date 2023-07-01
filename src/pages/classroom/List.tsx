@@ -1,18 +1,5 @@
-import {
-    Datagrid,
-    BooleanField,
-    TextField,
-    List,
-    FunctionField,
-    ReferenceField,
-    SearchInput,
-    TextInput,
-    NumberField,
-} from 'react-admin';
-import { MAPPING } from 'provider/mapping';
-import { Schemes } from 'Utils/Schemes';
+import { Datagrid, TextField, List, FunctionField, SearchInput, TextInput } from 'react-admin';
 import { Classroom } from 'types/models/classroom';
-import QuickFilter from 'components/ui/QuickFilter';
 import SK from 'pages/source-keys';
 
 const filters = [

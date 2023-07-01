@@ -26,7 +26,7 @@ export const authProviderLegacy = isProd
 
 if (isEmulator) {
     firebase.auth().useEmulator('http://localhost:9099/');
-    //firebase.storage().useEmulator("localhost", 9199);
+    firebase.storage().useEmulator('localhost', 9199);
 }
 
 export const getRootRef = (permission: { [key: string]: string }) => {

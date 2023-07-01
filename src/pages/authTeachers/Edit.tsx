@@ -5,7 +5,12 @@ const AuthorizedTeacherEdit = () => (
     <Edit>
         <SimpleForm style={{ alignItems: 'stretch' }}>
             <TextInput disabled source={SK.AUTH_TEACHERS('id')} />
-            <TextInput disabled source={SK.AUTH_TEACHERS('emailId')} label="Email Id" validate={[required(), email()]} />
+            <TextInput
+                disabled
+                source={SK.AUTH_TEACHERS('emailId')}
+                label="Email Id"
+                validate={[required(), email()]}
+            />
             <TextInput source={SK.AUTH_TEACHERS('name')} label="Name" validate={required()} />
             <TextInput source={SK.AUTH_TEACHERS('phone')} label="Phone" validate={required()} />
         </SimpleForm>

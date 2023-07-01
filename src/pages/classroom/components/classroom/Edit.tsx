@@ -9,17 +9,15 @@ import {
     SaveButton,
     DeleteButton,
     TextInput,
-    useUpdate,
     AutocompleteArrayInput,
     ReferenceArrayInput,
 } from 'react-admin';
 import { MAPPING } from 'provider/mapping';
-import { authProviderLegacy, defaultParams } from 'provider/firebase';
+import { defaultParams } from 'provider/firebase';
 import { Classroom } from 'types/models/classroom';
 import { AuthorizedTeacher, TeacherShort } from 'types/models/teacher';
 import SK from 'pages/source-keys';
 import { Dialog } from '@mui/material';
-const url = MAPPING.CLASSROOMS;
 
 type Props = {
     dialog: boolean;
@@ -29,54 +27,35 @@ type Props = {
 const EditClassroom = ({ teacherData, state }: { teacherData: TeacherShort[]; state: Props }) => {
     const record: Classroom = useRecordContext();
     const dataProvider = useDataProvider();
-    const [update] = useUpdate();
     const refresh = useRefresh();
     const notify = useNotify();
 
-    const validateClassroom = (values: any) => {
-        const errors: { [index: string]: string } = {};
-        const id = (e: { id: string }) => e.id;
-
-        return errors;
-    };
-    const fetchPermission = async () => {
-        let instituteId = '';
-        try {
-            const permission = await authProviderLegacy.getPermissions({});
-            instituteId = permission['institute'];
-        } catch (e: any) {
-            notify(e.message, { type: 'error' });
-        }
-        return instituteId;
-    };
     const onSubmit = async (props: any) => {
         const propRecord = props as Classroom;
-        const instituteId = await fetchPermission();
-        console.log(teacherData);
+
         const filteredTeachers = teacherData
             .filter((teacher) => props.teachers.includes(teacher.id))
-            .reduce((key, teacher) => {
-                return {
+            .reduce(
+                (key, teacher) => ({
                     ...key,
                     [teacher.id]: teacher,
-                };
-            }, {});
+                }),
+                {}
+            );
 
-        console.log(filteredTeachers);
         const newTeachers = { ...record.teachers, ...filteredTeachers };
         const updatedData = {
             ...record,
-            id: propRecord.std + '-' + propRecord.division + '-' + propRecord.year,
+            id: `${propRecord.std}-${propRecord.division}-${propRecord.year}`,
             teachers: newTeachers,
         };
-        console.log(record.teachers);
-        console.log(updatedData);
 
         await dataProvider.update<Classroom>(MAPPING.CLASSROOMS, {
             id: updatedData.id,
             data: updatedData,
             previousData: record,
         });
+
         refresh();
         notify(`Edited ${updatedData.id}`, { type: 'success' });
         state.setDialog(false);
@@ -86,7 +65,6 @@ const EditClassroom = ({ teacherData, state }: { teacherData: TeacherShort[]; st
         <Dialog open={state.dialog} onClose={() => state.setDialog(false)} fullWidth={true}>
             <SimpleForm
                 style={{ alignItems: 'stretch' }}
-                validate={validateClassroom}
                 onSubmit={onSubmit}
                 record={record}
                 toolbar={

@@ -1,5 +1,4 @@
 import {
-    EmailField,
     Show,
     SimpleShowLayout,
     TextField,
@@ -10,7 +9,7 @@ import {
 } from 'react-admin';
 import { AuthTeachersProviderExtended } from 'provider/custom/authorizedTeachers';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { AuthorizedTeacher } from 'types/models/teacher';
 import SK from 'pages/source-keys';
 import { authProviderLegacy } from 'provider/firebase';
@@ -18,9 +17,11 @@ import { authProviderLegacy } from 'provider/firebase';
 const AuthorizedTeacherShow = () => {
     const notify = useNotify();
     const refresh = useRefresh();
+    const [loading, setLoading] = useState(false);
+
+    // TODO: Display teacher classroom display
     // const { record } = useShowController();
     // const authorizedTeacher = record as AuthorizedTeacher;
-    const [loading, setLoading] = useState(false);
     // const [classroomData, setClassroomData] = useState<TeacherClassroom[]>([]);
     // const [subjectData, setSubjectData] = useState<Subject[]>([]);
     // const dataProvider = useDataProvider();
@@ -44,6 +45,7 @@ const AuthorizedTeacherShow = () => {
     //     setLoading(false);
     //     // eslint-disable-next-line react-hooks/exhaustive-deps
     // }, []);
+
     const handleCreation = async (record: AuthorizedTeacher) => {
         setLoading(true);
         try {

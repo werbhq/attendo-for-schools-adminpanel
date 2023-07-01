@@ -12,89 +12,30 @@ import {
     useUpdate,
 } from 'react-admin';
 import { MAPPING } from 'provider/mapping';
-import { getClassroomId } from 'Utils/helpers';
-// import { Schemes } from 'Utils/Schemes';
-// import { Subject, SubjectDoc } from 'types/models/subject';
-import { authProviderLegacy, defaultParams } from 'provider/firebase';
+import { defaultParams } from 'provider/firebase';
 import { Classroom } from 'types/models/classroom';
 import { AuthorizedTeacher, TeacherShort } from 'types/models/teacher';
 
 import SK from 'pages/source-keys';
-// import GroupLink from './components/classroom/GroupLink';
-
-// const CURRENT_CLASS_ID = 'This Classroom';
+import useInstitute from 'provider/hook/useInstitute';
 const url = MAPPING.CLASSROOMS;
 
-const CreateClassroom = ({
-    // schemes: schemeData,
-    // batchData,
-
-    teacherData,
-}: {
-    // schemes: SubjectDoc[];
-    // batchData: Batch[];
-    teacherData: TeacherShort[];
-}) => {
+const CreateClassroom = ({ teacherData }: { teacherData: TeacherShort[] }) => {
     const [update] = useUpdate();
     const refresh = useRefresh();
     const notify = useNotify();
     const redirect = useRedirect();
-    // const { getBranches, getSemesters, getSubjects, isDerived } = new Schemes(schemeData);
-    // const [data, setData] = useState<{
-    //     scheme: null | string;
-    //     branch: null | string;
-    //     name: null | string;
-    //     group: null | string;
-    //     semester: null | number;
-    //     batchId: null | string;
-    // }>({
-    //     scheme: null,
-    //     branch: null,
-    //     name: null,
-    //     group: null,
-    //     semester: null,
-    //     batchId: null,
-    // });
+    const instituteId = useInstitute();
 
-    const validateClassroom = (values: any) => {
-        const errors: { [index: string]: string } = {};
-        const id = (e: { id: string }) => e.id;
-
-        return errors;
-    };
-    const fetchPermission = async () => {
-        let instituteId = '';
-        try {
-            const permission = await authProviderLegacy.getPermissions({});
-            instituteId = permission['institute'];
-        } catch (e: any) {
-            notify(e.message, { type: 'error' });
-        }
-        return instituteId;
-    };
-    const transformSubmit = async (props: any) => {
-        const propRecord = props as Classroom;
-        const classroomId = (
-            propRecord.std +
-            '-' +
-            propRecord.division +
-            '-' +
-            propRecord.year
-        ).toString();
-        console.log(classroomId);
-        const instituteId = await fetchPermission();
-        console.log(
-            teacherData.reduce((key, teacher) => {
-                return {
-                    ...key,
-                    [teacher.id]: teacher,
-                };
-            }, {})
-        );
+    const transformSubmit = async (
+        propRecord: Omit<Classroom, 'teachers'> & { teachers: string[] }
+    ) => {
+        const classroomId = `${propRecord.std}-${propRecord.division}-${propRecord.year}`;
         const filteredTeachers = teacherData.filter((teacher) =>
-            props.teachers.includes(teacher.id)
+            propRecord.teachers.includes(teacher.id)
         );
-        const common = {
+
+        const data = {
             id: classroomId,
             students: propRecord.students ?? {},
             std: propRecord.std,
@@ -110,36 +51,27 @@ const CreateClassroom = ({
             instituteId: instituteId,
         };
 
-        let finalData: Classroom;
-
-        // if (!isDerived(record.name)) {
-        const classroomData: Classroom = {
-            ...common,
-        };
-        finalData = classroomData;
-        console.log(classroomData);
         update(
             url,
-            { id: finalData.id, data: finalData },
+            { id: data.id, data: data },
             {
                 onSuccess: () => {
-                    notify(`Added ${finalData.id}`, { type: 'success' });
+                    notify(`Added ${data.id}`, { type: 'success' });
                     refresh();
                     redirect('list', url);
                 },
             }
         );
 
-        return finalData;
+        return data;
     };
 
     return (
         <Create transform={transformSubmit}>
-            <SimpleForm style={{ alignItems: 'stretch' }} validate={validateClassroom}>
+            <SimpleForm style={{ alignItems: 'stretch' }}>
                 <TextInput source={SK.CLASSROOM('std')} required />
                 <TextInput source={SK.CLASSROOM('division')} required />
                 <TextInput source={SK.CLASSROOM('year')} required />
-
                 <ReferenceArrayInput
                     source={SK.CLASSROOM('teachers')}
                     reference={MAPPING.AUTH_TEACHERS}
@@ -151,8 +83,6 @@ const CreateClassroom = ({
                         filterToQuery={(searchText) => ({ userName: searchText })}
                     />
                 </ReferenceArrayInput>
-                {/* </> */}
-                {/* )} */}
             </SimpleForm>
         </Create>
     );
@@ -161,8 +91,6 @@ const CreateClassroom = ({
 const ClassroomsCreate = () => {
     const dataProvider = useDataProvider();
     const [teachers, setTeachers] = useState<TeacherShort[]>([]);
-    //     const [batchData, setBatchData] = useState<Batch[]>([]);
-    //     const [schemeData, setData] = useState<SubjectDoc[]>([]);
     const [loading, setLoading] = useState(true);
 
     const fetchData = () => {
@@ -177,14 +105,8 @@ const ClassroomsCreate = () => {
                 }));
             setTeachers(teacherData);
         });
-        // dataProvider.getList<Batch>(MAPPING.BATCHES, defaultParams).then((e) => {
-        //     setBatchData(e.data);
-        // });
-
-        // dataProvider
-        //     .getList<SubjectDoc>(MAPPING.SUBJECT, defaultParams)
-        //     .then((e) => setData(e.data));
     };
+
     useEffect(() => {
         setLoading(true);
         fetchData();

@@ -1,9 +1,5 @@
-import {
-    Classroom,
-    // ClassroomVirtual
-} from '../types/models/classroom';
+import { Classroom } from '../types/models/classroom';
 import { StudentShort as Student } from '../types/models/student';
-import { v4 as uuidv4 } from 'uuid';
 
 export const sortByRoll = (a: Student, b: Student) => {
     if (a.classId && b.classId) {
@@ -30,11 +26,6 @@ export const convertSingleValueListToSelectList = (value: string) => {
 
 export const getClassroomId = (data: Classroom) => {
     const dataIdSet = [data.std, data.division, data.year];
-    // if (isDerived) {
-    //     const dataVirtual = data as ClassroomVirtual;
-    //     dataIdSet.push(dataVirtual.subjectId);
-    //     dataIdSet.push(uuidv4().substring(0, 4));
-    // }
     return dataIdSet.join('-').toUpperCase();
 };
 

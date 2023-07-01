@@ -8,7 +8,6 @@ import {
     useNotify,
     useRedirect,
     useRefresh,
-    useUpdate,
 } from 'react-admin';
 import { MAPPING } from 'provider/mapping';
 import { defaultParams } from 'provider/firebase';
@@ -18,26 +17,23 @@ import { AuthorizedTeacher } from 'types/models/teacher';
 const url = MAPPING.AUTH_TEACHERS;
 
 const AuthorizedTeacherCreate = () => {
-    const [update] = useUpdate();
     const refresh = useRefresh();
     const notify = useNotify();
     const redirect = useRedirect();
     const dataProvider = useDataProvider();
-    const checkUpdate = async(data: any) => {
+    const checkUpdate = async (data: any) => {
         let isUpdate: boolean = false;
-       await  dataProvider.getList(url, defaultParams).then((e) => {
-            console.log(e.data);
-            console.log(data);
+        await dataProvider.getList(url, defaultParams).then((e) => {
             if (e.data.includes(data)) isUpdate = false;
             else {
-                if (e.data.findIndex((f) => f.emailId === data.emailId) != -1) {
-                    console.log('ho');
+                if (e.data.findIndex((f) => f.emailId === data.emailId) !== -1) {
                     isUpdate = false;
                 } else isUpdate = true;
             }
         });
         return isUpdate;
     };
+
     const onSubmit = async (data: any) => {
         const oldData = data;
         const isUpdate = await checkUpdate(data);

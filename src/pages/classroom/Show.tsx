@@ -1,32 +1,19 @@
 import { Show, TabbedShowLayout, useShowController, RecordContextProvider } from 'react-admin';
 import { Classroom } from 'types/models/classroom';
-// import SubjectTab from './tab/SubjectTab';
-import ReportTab from './tab/ReportTab';
 import StudentTab from './tab/StudentTab';
 import SummaryTab from './tab/SummaryTab';
 
 export const ClassroomShow = () => {
-    const { record: recordOriginal } = useShowController<Classroom>();
-    const record = {
-        ...recordOriginal,
-    };
-    // const record = {
-    //     ...recordOriginal,
-    //     parentClasses: Object.keys(recordOriginal?.parentClasses ?? {}),
-    //     teachers: recordOriginal?.teachers?.map((e) => e.id) ?? [],
-    // };
-
-    // const isNonVirtual = !record.isDerived;
+    const { record, isLoading } = useShowController<Classroom>();
+    if (isLoading) return <></>;
 
     return (
-        <Show >
+        <Show>
             <RecordContextProvider value={record}>
                 <TabbedShowLayout>
                     <SummaryTab label="summary" />
                     <StudentTab label="students" path="students" />
-                    {/* {isNonVirtual && <ReportTab label="reports" path="reports" />}
-                    {isNonVirtual && <SubjectTab label="subject" path="subject" />} */}
-                    {/* <ReportTab label="reports" path="reports" /> */}
+                    {/* TODO: ADD REPORT TAB */}
                 </TabbedShowLayout>
             </RecordContextProvider>
         </Show>

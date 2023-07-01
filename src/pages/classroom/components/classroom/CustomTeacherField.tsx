@@ -9,11 +9,7 @@ const TeacherField = () => {
     return (
         <ul style={{ padding: 0, margin: 0 }}>
             {Object.values(record.teachers).map((teacher: TeacherShort) => (
-                <Chip
-                    key={teacher.id}
-                    sx={{ ml: 0.5, mt: 1 }}
-                    label={teacher.name}
-                />
+                <Chip key={teacher.id} sx={{ ml: 0.5, mt: 1 }} label={teacher.name} />
             ))}
         </ul>
     );

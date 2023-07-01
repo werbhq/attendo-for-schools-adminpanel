@@ -1,52 +1,33 @@
 import {
-    // BooleanField,
     TextField,
     FunctionField,
     SimpleShowLayout,
     Tab,
-    ReferenceArrayField,
     ChipField,
-    SingleFieldList,
     useShowController,
     ReferenceField,
-    useDataProvider,
-    // ArrayField,
-    // Datagrid,
-    // SelectField,
-    // ReferenceField,
 } from 'react-admin';
-import { Button, Stack, Typography } from '@mui/material';
+import { Button, Stack } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-// import { Schemes } from 'Utils/Schemes';
 import { MAPPING } from 'provider/mapping';
 import { Classroom } from 'types/models/classroom';
 import SK from 'pages/source-keys';
-import EmptySingleDisplay from 'components/ui/EmptySingleField';
 import { useEffect, useState } from 'react';
 import EditClassroom from '../components/classroom/Edit';
-import { ClassroomFrontend } from 'types/frontend/classroom';
-import TeacherField from '../components/classroom/CustomTeacherField';
-import { AuthorizedTeacher, TeacherShort } from 'types/models/teacher';
+import { TeacherShort } from 'types/models/teacher';
 
 const SummaryTab = ({ label, ...rest }: { label: string }) => {
-    const { record } = useShowController();
+    const { record, isLoading } = useShowController();
     const [classroomDialog, setClassroomDialog] = useState<boolean>(false);
-    const [loading, setLoading] = useState(false);
-    const [teachersData, setTeachersData] = useState<TeacherShort[]>();
-    const dataProvider = useDataProvider();
+    const [teachersData, setTeachersData] = useState<TeacherShort[]>([]);
 
-    const fetchData = () => {
-        console.log(Object.values(record.teachers));
-        setTeachersData(Object.values(record.teachers));
-        // console.log(Object.values(record.teachers));
-
-    };
     useEffect(() => {
-        setLoading(true);
-        fetchData();
-        setLoading(false);
+        if (!isLoading) setTeachersData(Object.values(record.teachers));
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [isLoading]);
+
+    if (isLoading) return <></>;
+
     return (
         <Tab {...rest} label={label}>
             <SimpleShowLayout>
@@ -59,29 +40,29 @@ const SummaryTab = ({ label, ...rest }: { label: string }) => {
                     render={(record: Classroom) => Object.values(record.students ?? {}).length}
                 />
                 <FunctionField
-                        label="Teachers"
-                        emptyText="-"
-                        render={() => (
-                            <ul style={{ padding: 0, margin: 0 }}>
-                                {teachersData?.length !== 0 ? (
-                                    teachersData?.map((e:TeacherShort) => (
-                                            <ReferenceField
-                                                key={e.id}
-                                                record={e}
-                                                reference={MAPPING.AUTH_TEACHERS}
-                                                source="id"
-                                                link="show"
-                                                label={e.id}
-                                            >
-                                                <ChipField source="name" />
-                                            </ReferenceField>
-                                        ))
-                                ) : (
-                                    <> - </>
-                                )}
-                            </ul>
-                        )}
-                    />
+                    label="Teachers"
+                    emptyText="-"
+                    render={() => (
+                        <ul style={{ padding: 0, margin: 0 }}>
+                            {teachersData.length !== 0 ? (
+                                teachersData?.map((e: TeacherShort) => (
+                                    <ReferenceField
+                                        key={e.id}
+                                        record={e}
+                                        reference={MAPPING.AUTH_TEACHERS}
+                                        source="id"
+                                        link="show"
+                                        label={e.id}
+                                    >
+                                        <ChipField source="name" />
+                                    </ReferenceField>
+                                ))
+                            ) : (
+                                <> - </>
+                            )}
+                        </ul>
+                    )}
+                />
             </SimpleShowLayout>
 
             <div style={{ margin: '20px 0px' }}>
