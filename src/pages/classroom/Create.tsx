@@ -6,10 +6,6 @@ import {
     ReferenceArrayInput,
     AutocompleteArrayInput,
     TextInput,
-    useNotify,
-    useRedirect,
-    useRefresh,
-    useUpdate,
 } from 'react-admin';
 import { MAPPING } from 'provider/mapping';
 import { defaultParams } from 'provider/firebase';
@@ -18,13 +14,7 @@ import { AuthorizedTeacher, TeacherShort } from 'types/models/teacher';
 import SK from 'pages/source-keys';
 import useInstitute from 'provider/hook/useInstitute';
 
-const url = MAPPING.CLASSROOMS;
-
 const CreateClassroom = ({ teacherData }: { teacherData: TeacherShort[] }) => {
-    const [update] = useUpdate();
-    const refresh = useRefresh();
-    const notify = useNotify();
-    const redirect = useRedirect();
     const instituteId = useInstitute();
 
     const transformSubmit = async (
@@ -50,18 +40,6 @@ const CreateClassroom = ({ teacherData }: { teacherData: TeacherShort[] }) => {
                 }, {}) ?? {},
             instituteId: instituteId,
         };
-
-        update(
-            url,
-            { id: data.id, data: data },
-            {
-                onSuccess: () => {
-                    notify(`Added ${data.id}`, { type: 'success' });
-                    refresh();
-                    redirect('list', url);
-                },
-            }
-        );
 
         return data;
     };

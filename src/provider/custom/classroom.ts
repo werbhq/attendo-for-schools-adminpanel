@@ -25,26 +25,20 @@ const ClassroomProvider: DataProviderCustom<Classroom> = {
     create: async (resource, params, providers) => {
         const { data } = params;
         const { firebaseCollection } = providers;
-        const { exists: documentExists } = await firebaseCollection(MAPPING.CLASSROOMS)
-            .doc(data.id)
-            .get();
+        const ref = firebaseCollection(MAPPING.CLASSROOMS).doc(data.id);
 
+        const { exists: documentExists } = await ref.get();
         if (documentExists) throw new Error(`${data.id} classroom already exists`);
 
-        const ref = firebaseCollection(MAPPING.CLASSROOMS);
-        const promises = [
-            ref.doc(data.id).set({
-                ...data,
-                meta: {
-                    createdAt: FieldValue.serverTimestamp(),
-                    lastUpdated: FieldValue.serverTimestamp(),
-                    deleted: false,
-                    version: 2,
-                },
-            }),
-        ];
-
-        await Promise.all(promises);
+        await ref.set({
+            ...data,
+            meta: {
+                createdAt: FieldValue.serverTimestamp(),
+                lastUpdated: FieldValue.serverTimestamp(),
+                deleted: false,
+                version: 2,
+            },
+        });
 
         return { data, status: 200 };
     },
