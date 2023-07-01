@@ -177,68 +177,86 @@ export const ImportButton = ({
     const notify = useNotify();
     const refresh = useRefresh();
     const dataProvider = useDataProvider();
-    const record = useRecordContext();
+    const record = useRecordContext<Classroom>();
 
     const fileLoadHandler = async (data: Student[]) => {
+        const invalidAdmNos: string[] = [];
+
+        const validateData = (e: Student) => {
+            invalidAdmNos.push(e.admnNo);
+            if (!(e.admnNo && e.name && e.rollNo)) return false;
+            if (
+                typeof e.admnNo !== 'string' ||
+                typeof e.name !== 'string' ||
+                typeof e.rollNo !== 'string' ||
+                typeof e.rollNo !== 'number'
+            ) {
+                return false;
+            }
+
+            invalidAdmNos.pop();
+            return true;
+        };
+
         const invalidHeader = data.some((e) => {
             const keys = Object.keys(e).sort();
             const containsAllHeaders = csvExportHeaders.every((header) => keys.includes(header));
             return !containsAllHeaders;
         });
-        console.log(invalidHeader);
+
+        const dataInvalid = !data.every((e) => validateData(e));
+
         if (invalidHeader) {
-            const message = `Headers are invalid. Proper headers are ${csvExportHeaders.join(',')}`;
-            return notify(message, { type: 'error' });
-        } else {
-            console.log(record);
-
-            const dataRemoveNull = data.filter((e) => e.admnNo && e.name && e.rollNo);
-            console.log(dataRemoveNull);
-            dataRemoveNull.forEach((item) => {
-                item.admnNo = item.admnNo.toString().toUpperCase();
-                item.id = item.admnNo;
-                item.name =item.name.toString();
-                item.rollNo=Number(item.rollNo);
-                item.phoneNo = item.phoneNo ? item.phoneNo.toString() : '';
-                item.email = item.email ? item.email.toString() : '';
+            notify(`Headers are invalid. Proper headers are ${csvExportHeaders.join(',')}`, {
+                type: 'error',
             });
-
-            console.log(data);
-            const studentsList: Student[] = Object.values(record.students);
-            let matchingRecord: Student | undefined;
-            let message;
-            const updatedTeachersCount = dataRemoveNull.reduce((count, e) => {
-                matchingRecord = studentsList.find((f) => f.id === e.admnNo);
-                console.log(matchingRecord);
-                return count + (matchingRecord ? 0 : 1);
-            }, 0);
-            console.log(updatedTeachersCount);
-            const filteredData = dataRemoveNull.filter((e) => {
-                const { id } = e;
-
-                message = matchingRecord
-                    ? 'No updation'
-                    : `Updated ${updatedTeachersCount} Teachers`;
-                const shouldInclude = !matchingRecord
-                    ? e
-                    : !studentsList.some(({ id: recordId }) => recordId === id);
-                console.log(!studentsList.some(({ id: recordId }) => recordId === id));
-                refresh();
-                return shouldInclude;
-            });
-            console.log(filteredData);
-            await dataProvider.update<Student>(MAPPING.STUDENTS, {
-                id: record.id,
-                data: filteredData,
-                previousData: Object.values(record.students),
-                meta: { record },
-            });
-            refresh();
-            notify(message, {
-                type: 'success',
-            });
-            setListData(data);
         }
+
+        if (dataInvalid) {
+            notify(
+                `The emailId, name should be provided. Please check emails: ${invalidAdmNos.filter(
+                    (e) => e !== undefined
+                )}`,
+                { type: 'error' }
+            );
+        }
+
+        if (invalidHeader || dataInvalid) return;
+
+        data.forEach((item) => {
+            item.admnNo = item.admnNo.toString().toUpperCase();
+            item.id = item.admnNo;
+            item.name = item.name.toString();
+            if (typeof item.rollNo === 'string') item.rollNo = parseInt(item.rollNo);
+            item.phoneNo = item.phoneNo ? item.phoneNo.toString() : '';
+            item.email = item.email ? item.email.toString() : '';
+        });
+
+        const oldStudents = Object.values(record.students);
+        const newStudents = data.filter((e) => !oldStudents.map((e) => e.id).includes(e.id));
+        const oldStudentCount = data.length - newStudents.length;
+
+        const newData = [...oldStudents, ...newStudents];
+
+        await dataProvider.update<Student>(MAPPING.STUDENTS, {
+            id: record.id,
+            data: newData,
+            previousData: oldStudents,
+            meta: { record },
+        });
+
+        notify(
+            [
+                `Ignored ${oldStudentCount} Already Existing Teachers`,
+                `Added ${newStudents.length} Teachers`,
+            ].join('. '),
+            {
+                type: 'success',
+            }
+        );
+
+        refresh();
+        setListData(data.sort((a, b) => a.rollNo - b.rollNo));
     };
 
     return (
