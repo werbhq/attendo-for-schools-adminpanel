@@ -1,4 +1,6 @@
-# Attendo Admin
+# Attendo Schools Admin
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/cfcabed4-a5f4-40f1-b077-322cae90e9e3/deploy-status)](https://app.netlify.com/sites/attendo-admin-schools/deploys)
 
 ## Available Scripts
 
