@@ -21,6 +21,7 @@ const AuthorizedTeacherCreate = () => {
     const notify = useNotify();
     const redirect = useRedirect();
     const dataProvider = useDataProvider();
+
     const checkUpdate = async (data: any) => {
         let isUpdate: boolean = false;
         await dataProvider.getList(url, defaultParams).then((e) => {
@@ -39,7 +40,6 @@ const AuthorizedTeacherCreate = () => {
         const isUpdate = await checkUpdate(data);
         data = { ...data, id: data.emailId, created: false };
 
-        console.log(isUpdate);
         if (isUpdate === true) {
             await dataProvider.update<AuthorizedTeacher>(url, {
                 id: data.id,
