@@ -214,7 +214,7 @@ export const ImportButton = ({
 
         if (dataInvalid) {
             notify(
-                `The emailId, name should be provided. Please check emails: ${invalidAdmNos.filter(
+                `The admNo, name, rollNo should be provided. Please check emails: ${invalidAdmNos.filter(
                     (e) => e !== undefined
                 )}`,
                 { type: 'error' }
