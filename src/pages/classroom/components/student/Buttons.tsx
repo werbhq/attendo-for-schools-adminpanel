@@ -186,7 +186,7 @@ export const ImportButton = ({
             invalidAdmNos.push(e.admnNo);
             if (!(e.admnNo && e.name && e.rollNo)) return false;
             if (
-                typeof e.admnNo !== 'string' ||
+                (typeof e.admnNo !== 'string' && typeof e.admnNo !== 'number') ||
                 typeof e.name !== 'string' ||
                 (typeof e.rollNo !== 'string' && typeof e.rollNo !== 'number')
             ) {
