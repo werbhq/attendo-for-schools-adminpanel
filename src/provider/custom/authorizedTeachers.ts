@@ -5,6 +5,7 @@ import { DataProviderCustom } from 'types/DataProvider';
 import { AuthorizedTeacher } from 'types/models/teacher';
 import { paginateSingleDoc } from '../helpers/pagination';
 import { getFunctions } from 'firebase/functions';
+import SK from 'pages/source-keys';
 
 /**
  * Don't call this directly
@@ -55,7 +56,7 @@ const AuthTeachersProvider: DataProviderCustom<AuthorizedTeacher> = {
     update: async (resource, params, providers) => {
         const { id, data } = params;
         const { firebaseCollection } = providers;
-        const fieldPath = new FieldPath('teachers', id as string);
+        const fieldPath = new FieldPath(SK.CLASSROOM('teachers'), id as string);
         await firebaseCollection(MAPPING.DATA).doc(MAPPING.AUTH_TEACHERS).update(fieldPath, data);
         return { data, status: 200 };
     },

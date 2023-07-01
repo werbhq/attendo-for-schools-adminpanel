@@ -15,30 +15,28 @@ import {
     FilterButton,
     CreateButton,
     BulkDeleteWithConfirmButton,
+    BooleanInput,
 } from 'react-admin';
 import AddIcon from '@mui/icons-material/Add';
-import QuickFilter from 'components/ui/QuickFilter';
 import { AuthTeachersProviderExtended } from 'provider/custom/authorizedTeachers';
 import { ImportButton } from './components/Button';
 import jsonExport from 'jsonexport/dist';
 import { MAPPING } from 'provider/mapping';
 import { AuthorizedTeacher } from 'types/models/teacher';
 import SK from 'pages/source-keys';
-import { authProviderLegacy } from 'provider/firebase';
+import useInstitute from 'provider/hook/useInstitute';
 
 const filters = [
     <SearchInput source={SK.AUTH_TEACHERS('id')} alwaysOn resettable />,
-    <QuickFilter
-        source={SK.AUTH_TEACHERS('created')}
-        label="Account created"
-        defaultValue={true}
-    />,
+    <BooleanInput source={SK.AUTH_TEACHERS('created')} />,
 ];
 
 const AuthorizedTeacherList = () => {
     const notify = useNotify();
     const refresh = useRefresh();
     const csvHeaders = ['name', 'emailId', 'phone'];
+    const instituteId = useInstitute();
+
     const PostBulkActionButtons = (data: BulkActionProps) => {
         return (
             <>
@@ -46,12 +44,9 @@ const AuthorizedTeacherList = () => {
                     label="Create Account"
                     startIcon={<AddIcon />}
                     onClick={async () => {
-                        const permission = await authProviderLegacy.getPermissions({});
-                        console.log(data.selectedIds);
-                        console.log(permission['institute']);
                         AuthTeachersProviderExtended.createAccounts(
                             data.selectedIds as string[],
-                            permission['institute']
+                            instituteId
                         ).then((e) => {
                             notify(e.message, { type: e.success ? 'success' : 'error' });
                             refresh();
@@ -94,7 +89,7 @@ const AuthorizedTeacherList = () => {
             <Datagrid rowClick="show" bulkActionButtons={<PostBulkActionButtons />}>
                 <EmailField source={SK.AUTH_TEACHERS('emailId')} label="Email Id" />
                 <TextField source={SK.AUTH_TEACHERS('name')} label="Name" />
-                <BooleanField source={SK.AUTH_TEACHERS('created')} looseValue sortable={false} />
+                <BooleanField source={SK.AUTH_TEACHERS('created')} sortable={false} />
                 <TextField source={SK.AUTH_TEACHERS('phone')} label="Phone Number" />
             </Datagrid>
         </List>

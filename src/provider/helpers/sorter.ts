@@ -35,7 +35,7 @@ export function sorter<T extends RaRecord>(params: GetListParams, data: T[]) {
                 } else if (Array.isArray(e[e_field])) {
                     return e[e_field].includes(value);
                 } else if (typeof value === 'boolean') {
-                    if (!e[e_field]) return false;
+                    if (e[e_field] === undefined) return false;
                     return e[e_field] === value;
                 }
                 return true;
