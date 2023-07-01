@@ -15,9 +15,9 @@ import { MAPPING } from 'provider/mapping';
 import { defaultParams } from 'provider/firebase';
 import { Classroom } from 'types/models/classroom';
 import { AuthorizedTeacher, TeacherShort } from 'types/models/teacher';
-
 import SK from 'pages/source-keys';
 import useInstitute from 'provider/hook/useInstitute';
+
 const url = MAPPING.CLASSROOMS;
 
 const CreateClassroom = ({ teacherData }: { teacherData: TeacherShort[] }) => {
