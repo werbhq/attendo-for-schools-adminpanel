@@ -1,6 +1,6 @@
 {
-  "short_name": "Attendo Admin",
-  "name": "Admin Panel For Attendo App",
+  "short_name": "Attendo Admin Schools",
+  "name": "Admin Panel For Attendo Schools App",
   "icons": [
     {
       "src": "favicon.ico",
