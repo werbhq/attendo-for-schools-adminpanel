@@ -52,36 +52,33 @@ const EditClassroom = ({ teacherData, state }: { teacherData: TeacherShort[]; st
     const onSubmit = async (props: any) => {
         const propRecord = props as Classroom;
         const instituteId = await fetchPermission();
-
-        const common = {
-            id: propRecord.std + '-' + propRecord.division + '-' + propRecord.year,
-            std: propRecord.std,
-            division: propRecord.division,
-            year: propRecord.year,
-            teachers: teacherData.reduce((key, teacher) => {
+        console.log(teacherData);
+        const filteredTeachers = teacherData
+            .filter((teacher) => props.teachers.includes(teacher.id))
+            .reduce((key, teacher) => {
                 return {
                     ...key,
                     [teacher.id]: teacher,
                 };
-            }, {}),
-            students: propRecord.students,
-            instituteId: instituteId,
-        };
+            }, {});
 
-        let finalData: Classroom;
-
-        const classroomData: Classroom = {
-            ...common,
+        console.log(filteredTeachers);
+        const newTeachers = { ...record.teachers, ...filteredTeachers };
+        const updatedData = {
+            ...record,
+            id: propRecord.std + '-' + propRecord.division + '-' + propRecord.year,
+            teachers: newTeachers,
         };
-        finalData = classroomData;
-        console.log(finalData.teachers);
+        console.log(record.teachers);
+        console.log(updatedData);
+
         await dataProvider.update<Classroom>(MAPPING.CLASSROOMS, {
-            id: finalData.id,
-            data: finalData,
+            id: updatedData.id,
+            data: updatedData,
             previousData: record,
         });
         refresh();
-        notify(`Edited ${finalData.id}`, { type: 'success' });
+        notify(`Edited ${updatedData.id}`, { type: 'success' });
         state.setDialog(false);
     };
 

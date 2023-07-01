@@ -73,52 +73,62 @@ const CreateClassroom = ({
         return instituteId;
     };
     const transformSubmit = async (props: any) => {
-       
-
-        const record = props as Classroom;
-        const classroomId = (record.std + '-' + record.division + '-' + record.year).toString();
+        const propRecord = props as Classroom;
+        const classroomId = (
+            propRecord.std +
+            '-' +
+            propRecord.division +
+            '-' +
+            propRecord.year
+        ).toString();
         console.log(classroomId);
         const instituteId = await fetchPermission();
-        console.log(teacherData.reduce((key, teacher) => {
-            return {
-                ...key,
-                [teacher.id]: teacher,
-            };
-        }, {}) )
-        const common = {
-            id: classroomId,
-            students: record.students ?? {},
-            std: record.std,
-            division: record.division,
-            year: Number(record.year),
-            teachers: teacherData.reduce((key, teacher) => {
+        console.log(
+            teacherData.reduce((key, teacher) => {
                 return {
                     ...key,
                     [teacher.id]: teacher,
                 };
-            }, {})  ??{},
+            }, {})
+        );
+        const filteredTeachers = teacherData.filter((teacher) =>
+            props.teachers.includes(teacher.id)
+        );
+        const common = {
+            id: classroomId,
+            students: propRecord.students ?? {},
+            std: propRecord.std,
+            division: propRecord.division,
+            year: Number(propRecord.year),
+            teachers:
+                filteredTeachers.reduce((key, teacher) => {
+                    return {
+                        ...key,
+                        [teacher.id]: teacher,
+                    };
+                }, {}) ?? {},
             instituteId: instituteId,
         };
 
         let finalData: Classroom;
-        
+
         // if (!isDerived(record.name)) {
         const classroomData: Classroom = {
             ...common,
         };
         finalData = classroomData;
         console.log(classroomData);
-        // update(
-        //     url,
-        //     { id: finalData.id, data: finalData },
-        //     {
-        //         onSuccess: () => {
-        //             notify(`Added ${finalData.id}`, { type: 'success' });
-        //             refresh();
-        //             redirect('list', url);
-        //         },
-        //     }
-        // );
+        update(
+            url,
+            { id: finalData.id, data: finalData },
+            {
+                onSuccess: () => {
+                    notify(`Added ${finalData.id}`, { type: 'success' });
+                    refresh();
+                    redirect('list', url);
+                },
+            }
+        );
 
         return finalData;
     };
@@ -159,11 +169,11 @@ const ClassroomsCreate = () => {
         dataProvider.getList<AuthorizedTeacher>(MAPPING.AUTH_TEACHERS, defaultParams).then((e) => {
             const teacherData = e.data
                 .filter((e) => e.created)
-                .map(({ id, emailId, name,phone }) => ({
+                .map(({ id, emailId, name, phone }) => ({
                     id,
                     emailId: emailId,
                     name: name,
-                    phone:phone
+                    phone: phone,
                 }));
             setTeachers(teacherData);
         });
