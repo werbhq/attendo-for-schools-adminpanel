@@ -167,6 +167,7 @@ export default function EditStudent({
                 <TextInput
                     // source={SK.STUDENT('regNo')}
                     // label="Registration Number"
+                    disabled
                     source={SK.STUDENT('admnNo')}
                     label="Admission Number"
                     sx={style}
