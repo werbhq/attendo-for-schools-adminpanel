@@ -197,7 +197,10 @@ export const ImportButton = ({
             dataRemoveNull.forEach((item) => {
                 item.admnNo = item.admnNo.toString().toUpperCase();
                 item.id = item.admnNo;
+                item.name =item.name.toString();
+                item.rollNo=Number(item.rollNo);
                 item.phoneNo = item.phoneNo ? item.phoneNo.toString() : '';
+                item.email = item.email ? item.email.toString() : '';
             });
 
             console.log(data);
