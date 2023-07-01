@@ -31,7 +31,11 @@ export const ImportButton = ({ csvExportHeaders, ...rest }: { csvExportHeaders: 
             return notify(message, { type: 'error' });
         } else {
             const dataRemoveNull = data.filter((e) => e.emailId && e.name && e.phone);
-
+            dataRemoveNull.forEach((item) => {
+                item.emailId=item.emailId.toString();
+                item.name=item.name.toString();
+                item.phone = item.phone ? item.phone.toString() : '';
+            });
             let matchingRecord: any;
             const updatedTeachersCount = dataRemoveNull.reduce((count, e) => {
                 matchingRecord = record.find(({ id }) => id === e.emailId);
