@@ -24,7 +24,13 @@ type Props = {
     setDialog: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const EditClassroom = ({ teacherData, state }: { teacherData: TeacherShort[]; state: Props }) => {
+const EditClassroomModal = ({
+    teacherData,
+    state,
+}: {
+    teacherData: TeacherShort[];
+    state: Props;
+}) => {
     const record: Classroom = useRecordContext();
     const dataProvider = useDataProvider();
     const refresh = useRefresh();
@@ -61,12 +67,19 @@ const EditClassroom = ({ teacherData, state }: { teacherData: TeacherShort[]; st
         state.setDialog(false);
     };
 
+    const convertTeacherObject = (recordData: Classroom) => {
+        return {
+            ...recordData,
+            teachers: Object.keys(recordData.teachers),
+        } as Omit<Classroom, 'teachers'> & { teachers: string[] };
+    };
+
     return (
         <Dialog open={state.dialog} onClose={() => state.setDialog(false)} fullWidth={true}>
             <SimpleForm
                 style={{ alignItems: 'stretch' }}
                 onSubmit={onSubmit}
-                record={record}
+                record={convertTeacherObject(record)}
                 toolbar={
                     <Toolbar sx={{ justifyContent: 'space-between', display: 'flex' }}>
                         <SaveButton alwaysEnable />
@@ -119,7 +132,7 @@ const ClassroomsEdit = ({ state }: { state: Props }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return <>{loading ? <></> : <EditClassroom teacherData={teachers} state={state} />}</>;
+    return <>{loading ? <></> : <EditClassroomModal teacherData={teachers} state={state} />}</>;
 };
 
 export default ClassroomsEdit;
